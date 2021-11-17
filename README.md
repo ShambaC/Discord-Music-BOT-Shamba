@@ -72,6 +72,33 @@ To use the project correctly you will need some tools.
 
 [Node JS](https://nodejs.org/en/) (v16) for environment
 
+### 🤖 Commands
+
+|       Name       | Description                                                        | Options              |
+|:----------------:|--------------------------------------------------------------------|----------------------|
+| invite           | Invite link for the bot                                            |                      |
+| ping             | Check the ping of the BOT                                          |                      |
+| back(previous)   | Play the previous song                                             |                      |
+| clear(cq)        | Clear the queue                                                    |                      |
+| filter           | Apply filters to the current queue                                 | filter name          |
+| loop(lp, repeat) | Loop the queue or current track                                    | none, queue          |
+| lyrics           | Displays the lyrics of the current track or the track you searched | none, search term    |
+| nowplaying(np)   | Shows the currently playing track details with buttons             |                      |
+| pause            | Pause the track                                                    |                      |
+| play(p)          | Play a song with URL or search term                                | URL, search term     |
+| playfile(pf)     | Play the file attached to this command message                     |                      |
+| progress(pbar)   | Shows the current timestamp of the track as a bar                  |                      |
+| queue(q)         | Shows the queue of tracks                                          |                      |
+| remove(rm)       | Remove a particular track from queue                               | track number         |
+| resume(rs)       | Resumes the track                                                  |                      |
+| save(sv)         | Saves the name of the track to user's DMs                          |                      |
+| search           | Shows a list of 10 songs to choose from                            | Search Terms         |
+| seek             | Seek to a part of track                                            | Timestamp in seconds |
+| shuffle          | Shuffle the queue order                                            |                      |
+| skip(sk)         | Skips the current song                                             |                      |
+| stop(dc)         | Stops and disconnects the BOT                                      |                      |
+| volume(vol)      | Set internal volume of the BOT                                     | value                |
+
 Without forgetting of course the code editor ^^
 
 Realized with ❤️ by ShambaC(ShambaC#3440).
