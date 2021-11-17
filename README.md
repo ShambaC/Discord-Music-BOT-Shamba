@@ -58,6 +58,12 @@ Advanced configuration
 - `opt/maxVol`, the maximum volume that users can define
 - `opt/discordPlayer`, options used by discord-player
 
+Configure the lyrics command
+
+- Open the `lyrics.js` file under `commands/music`
+- Use your Genius app token here or leave it blank in line 3 : `const Client = new Genius.Client("Token or blank");`
+- Create your Genius client [here](http://genius.com/api-clients)
+
 ### 📑 Installation
 
 To use the project correctly you will need some tools.
