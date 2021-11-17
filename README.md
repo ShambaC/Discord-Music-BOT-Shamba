@@ -4,7 +4,7 @@ A complete code to download for a music bot 🎧
 
 Looking for a code for a music bot ? This fully open source code is made for your project !
 
-This Project was made with a fork of Zerio Dev's Music BOT.
+This Project was made with a fork of Zerio Dev's [Music BOT](https://github.com/ZerioDev/Music-bot).
 
 ### ⚡ Configuration
 
@@ -69,4 +69,7 @@ To use the project correctly you will need some tools.
 Without forgetting of course the code editor ^^
 
 Realized with ❤️ by ShambaC(ShambaC#3440).
+
+You can try out the BOT by inviting it to your server [here](https://discord.com/api/oauth2/authorize?client_id=507874682242990081&permissions=2150942784&scope=bot%20applications.commands)
+
 Contact me on Discord for any help => ShambaC#3440
