@@ -46,6 +46,7 @@ Basic configuration
 - `app/px`, the prefix that will be set to use the bot
 - `app/token`, the token of the bot available on the [Discord Developers](https://discordapp.com/developers/applications) section
 - `app/playing`, the activity of the bot
+- `app/type`, type of the activity status //PLAYING, STREAMING, LISTENING, WATCHING, CUSTOM, COMPETING
 
 DJ mode configuration
 
