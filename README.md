@@ -16,6 +16,7 @@ module.exports = {
         px: 'XXX',
         token: 'XXX',
         playing: 'Game',
+	type: 'Status type',
     },
 
     opt: {
