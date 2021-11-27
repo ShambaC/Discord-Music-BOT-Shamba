@@ -3,6 +3,7 @@ module.exports = {
         px: '>',
         token: 'your token here',
         playing: 'Game',
+        type: 'Status type',
     },
 
     opt: {
