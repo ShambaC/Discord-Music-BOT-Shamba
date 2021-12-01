@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 const Genius = require("genius-lyrics");
-const Client = new Genius.Client("vPHAIYQj0Oh2eURafJd5-KFK4cXcDDjJ0eT0LV1S80DnXtpwPstHQk_DCtIstrux");
+const Client = new Genius.Client("token or blank");
 
 module.exports = {
     name: 'lyrics',
