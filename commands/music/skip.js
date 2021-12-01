@@ -1,8 +1,10 @@
 module.exports = {
     name: 'skip',
     aliases: ['sk'],
+    category: 'Music',
     utilisation: '{prefix}skip',
     voiceChannel: true,
+    description: 'Skips the current song',
 
     execute(client, message) {
         const queue = player.getQueue(message.guild.id);

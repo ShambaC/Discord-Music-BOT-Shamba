@@ -1,8 +1,10 @@
 module.exports = {
     name: 'shuffle',
     aliases: ['sh'],
+    category: 'Music',
     utilisation: '{prefix}shuffle',
     voiceChannel: true,
+    description: 'Shuffle the queue order',
 
     async execute(client, message) {
         const queue = player.getQueue(message.guild.id);

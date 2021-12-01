@@ -3,8 +3,10 @@ const maxVol = client.config.opt.maxVol;
 module.exports = {
     name: 'volume',
     aliases: ['vol'],
+    category: 'Music',
     utilisation: `{prefix}volume [1-${maxVol}]`,
     voiceChannel: true,
+    description: 'Set internal volume of the BOT',
 
     execute(client, message, args) {
         const queue = player.getQueue(message.guild.id);

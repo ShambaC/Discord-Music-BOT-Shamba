@@ -1,11 +1,11 @@
 const { MessageEmbed } = require('discord.js');
 
 module.exports = {
-    name: 'invite',
+    name: 'about',
     aliases: [],
     category: 'Core',
-    utilisation: '{prefix}invite',
-    description: 'Invite link for the bot',
+    utilisation: '{prefix}about',
+    description: 'Shows info about the BOT',
 
     execute(client, message, args) {
         const embed = new MessageEmbed();
@@ -15,8 +15,9 @@ module.exports = {
 
         
 
-        embed.setDescription('Invite');
-        embed.addField('Wanna Invite the bot to your server ?', '[Invite the bot here](Invite link here)', false);
+        embed.setDescription('This BOT is open source');
+        embed.addField('Source code', '[Github](https://github.com/ShambaC/Discord-Music-BOT-Shamba)', true)
+        embed.addField('Invite', '[Invite the bot here](Invite link here)', true);
 
         embed.setTimestamp();
         embed.setFooter('Made with heart by ShambaC ❤️', message.author.avatarURL({ dynamic: true }));

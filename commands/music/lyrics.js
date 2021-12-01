@@ -1,11 +1,13 @@
 const { MessageEmbed } = require('discord.js');
 const Genius = require("genius-lyrics");
-const Client = new Genius.Client("Token or blank");
+const Client = new Genius.Client("vPHAIYQj0Oh2eURafJd5-KFK4cXcDDjJ0eT0LV1S80DnXtpwPstHQk_DCtIstrux");
 
 module.exports = {
     name: 'lyrics',
     aliases: [],
+	category: 'Music',
     utilisation: '{prefix}lyrics [song name]',
+	description: 'Displays the lyrics of the current track or the track you searched',
 
     async execute(client, message, args) {
       const queue = player.getQueue(message.guild.id);
@@ -17,15 +19,13 @@ module.exports = {
 
       message.channel.sendTyping();
 
-	  if(queue)
+	  if(args[0])
 	  {
-		  argument = false;
-		  tempterm = queue.current.title;
-
+		tempterm = args.join(' ');
 	  }
 	  else
 	  {
-		  tempterm = args.join(' ');
+		tempterm = queue.current.title;
 	  }
 
 	 
@@ -38,11 +38,8 @@ module.exports = {
 		tempterm = words[0];
 	  }
 
-	 
-	  
 		searches = await Client.songs.search(tempterm);
 		
-
 		const firstSong = searches[0];
 
 		if(typeof firstSong === "undefined")

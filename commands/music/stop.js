@@ -1,8 +1,10 @@
 module.exports = {
     name: 'stop',
     aliases: ['dc'],
+    category: 'Music',
     utilisation: '{prefix}stop',
     voiceChannel: true,
+    description: 'Stops and disconnects the BOT',
 
     execute(client, message) {
         const queue = player.getQueue(message.guild.id);

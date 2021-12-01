@@ -1,8 +1,10 @@
 module.exports = {
     name: 'remove',
     aliases: ['rm'],
+    category: 'Music',
     utilisation: '{prefix}remove',
     voiceChannel: true,
+    description: 'Remove a particular track from queue',
 
     async execute(client, message,args) {
         const queue = player.getQueue(message.guild.id);

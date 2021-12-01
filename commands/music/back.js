@@ -1,8 +1,10 @@
 module.exports = {
     name: 'back',
     aliases: ['previous'],
+    category: 'Music',
     utilisation: '{prefix}back',
     voiceChannel: true,
+    description: 'Play the previous song',
 
     async execute(client, message) {
         const queue = player.getQueue(message.guild.id);

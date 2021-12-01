@@ -3,8 +3,10 @@ const ms = require('ms');
 module.exports = {
     name: 'seek',
     aliases: [],
+    category: 'Music',
     utilisation: '{prefix}seek [time]',
     voiceChannel: true,
+    description: 'Seek to a part of track',
 
     async execute(client, message, args) {
         const queue = player.getQueue(message.guild.id);

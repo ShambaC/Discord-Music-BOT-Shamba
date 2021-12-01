@@ -1,8 +1,10 @@
 module.exports = {
     name: 'clear',
     aliases: ['cq'],
+    category: 'Music',
     utilisation: '{prefix}clear',
     voiceChannel: true,
+    description: 'Clear the queue',
 
     async execute(client, message) {
         const queue = player.getQueue(message.guild.id);

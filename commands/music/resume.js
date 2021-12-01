@@ -1,8 +1,10 @@
 module.exports = {
     name: 'resume',
     aliases: ['rs'],
+    category: 'Music',
     utilisation: '{prefix}resume',
     voiceChannel: true,
+    description: 'Resumes the track',
 
     execute(client, message) {
         const queue = player.getQueue(message.guild.id);

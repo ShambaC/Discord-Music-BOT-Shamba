@@ -1,8 +1,10 @@
 module.exports = {
     name: 'pause',
     aliases: [],
+    category: 'Music',
     utilisation: '{prefix}pause',
     voiceChannel: true,
+    description: 'Pause the track',
 
     execute(client, message) {
         const queue = player.getQueue(message.guild.id);

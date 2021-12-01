@@ -3,8 +3,10 @@ const { QueryType } = require('discord-player');
 module.exports = {
     name: 'search',
     aliases: [],
+    category: 'Music',
     utilisation: '{prefix}search [song name/URL]',
     voiceChannel: true,
+    description: 'Shows a list of 10 songs to choose from',
 
     async execute(client, message, args) {
         if (!args[0]) return message.channel.send(`Please enter a valid search ${message.author}... try again ? ❌`);
@@ -16,9 +18,12 @@ module.exports = {
 
         if (!res || !res.tracks.length) return message.channel.send(`No results found ${message.author}... try again ? ❌`);
 
-        const queue = await player.createQueue(message.guild, {
-            metadata: message.channel
-        });
+        
+        
+            const queue = await player.createQueue(message.guild, {
+                metadata: message.channel
+            });
+        
 
         try {
             if (!queue.connection) await queue.connect(message.member.voice.channel);

@@ -1,8 +1,10 @@
 module.exports = {
     name: 'progress',
     aliases: ['pbar'],
+    category: 'Music',
     utilisation: '{prefix}progress',
     voiceChannel: true,
+    description: 'Shows the current timestamp of the track as a bar',
 
     async execute(client, message) {
         const queue = player.getQueue(message.guild.id);

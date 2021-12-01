@@ -3,8 +3,10 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     name: 'queue',
     aliases: ['q'],
+    category: 'Music',
     utilisation: '{prefix}queue',
     voiceChannel: true,
+    description: 'Shows the queue of tracks',
 
     execute(client, message) {
         const queue = player.getQueue(message.guild.id);

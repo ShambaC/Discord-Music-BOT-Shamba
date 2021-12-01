@@ -3,8 +3,10 @@ const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
 module.exports = {
     name: 'nowplaying',
     aliases: ['np'],
+    category: 'Music',
     utilisation: '{prefix}nowplaying',
     voiceChannel: true,
+    description: 'Shows the currently playing track details with buttons',
 
     execute(client, message) {
         const queue = player.getQueue(message.guild.id);

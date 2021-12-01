@@ -1,8 +1,10 @@
 module.exports = {
     name: 'filter',
     aliases: [],
+    category: 'Music',
     utilisation: '{prefix}filter [filter name]',
     voiceChannel: true,
+    description: 'Apply filters to the current queue',
 
     async execute(client, message, args) {
         const queue = player.getQueue(message.guild.id);

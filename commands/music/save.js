@@ -1,8 +1,10 @@
 module.exports = {
     name: 'save',
     aliases: ['sv'],
+    category: 'Music',
     utilisation: '{prefix}save',
     voiceChannel: true,
+    description: 'Saves the name of the track to user\'s DMs',
 
     async execute(client, message) {
         const queue = player.getQueue(message.guild.id);

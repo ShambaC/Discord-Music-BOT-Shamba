@@ -3,8 +3,10 @@ const { QueryType } = require('discord-player');
 module.exports = {
     name: 'playfile',
     aliases: ['pf'],
+    category: 'Music',
     utilisation: '{prefix}playfile',
     voiceChannel: true,
+    description: 'Play the file attached to this command message',
 
     async execute(client, message, args) {
 
@@ -24,9 +26,12 @@ module.exports = {
 
         if (!res || !res.tracks.length) return message.channel.send(`Not a valid file ${message.author}... try again ? ❌`);
 
-        const queue = await player.createQueue(message.guild, {
-            metadata: message.channel
-        });
+        
+        
+            const queue = await player.createQueue(message.guild, {
+                metadata: message.channel
+            });
+        
 
         try {
             if (!queue.connection) await queue.connect(message.member.voice.channel);

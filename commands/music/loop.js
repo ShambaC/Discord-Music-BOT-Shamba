@@ -3,8 +3,10 @@ const { QueueRepeatMode } = require('discord-player');
 module.exports = {
     name: 'loop',
     aliases: ['lp', 'repeat'],
+    category: 'Music',
     utilisation: '{prefix}loop <queue>',
     voiceChannel: true,
+    description: 'Loop the queue or current track',
 
     execute(client, message, args) {
         const queue = player.getQueue(message.guild.id);
