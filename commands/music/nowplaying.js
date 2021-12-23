@@ -19,7 +19,7 @@ module.exports = {
 
         embed.setColor('RED');
         embed.setThumbnail(track.thumbnail);
-        embed.setAuthor(track.title, client.user.displayAvatarURL({ size: 1024, dynamic: true }));
+        embed.setAuthor(track.title, client.user.displayAvatarURL({ size: 1024, dynamic: true }), track.url);
 
         const methods = ['disabled', 'track', 'queue'];
 
