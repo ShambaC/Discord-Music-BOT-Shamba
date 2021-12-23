@@ -9,9 +9,10 @@ You can try out the BOT by inviting it to your server [here](https://discord.com
 This Project was made with a fork of Zerio Dev's [Music BOT](https://github.com/ZerioDev/Music-bot).
 
 ### Screenshots
-[img]https://i.imgur.com/iorRj7o.png[/img]
+![image](https://user-images.githubusercontent.com/38806897/147191799-b880a8e6-ff5d-4702-84b0-95d23739d8ff.png)
 
-[img]https://i.imgur.com/lZFLBfP.png[/img]
+![image](https://user-images.githubusercontent.com/38806897/147191840-b34d746f-a87b-447d-9610-89013dac8750.png)
+
 
 ### ⚡ Configuration
 
