@@ -30,6 +30,7 @@ module.exports = {
         
             const queue = await player.createQueue(message.guild, {
                 metadata: message.channel,
+                play_embed_send: false,
                 npembed: null,
                 isPaused: false
             });

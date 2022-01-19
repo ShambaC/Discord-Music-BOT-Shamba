@@ -31,7 +31,6 @@ stopButton.setEmoji('⏹️');
 
 const row = new MessageActionRow().addComponents(saveButton, nextButton, pauseButton, playButton, stopButton);
 
-var play_embed_send = 0;
 const embed = new MessageEmbed();
 
 player.on('error', (queue, error) => {
@@ -63,17 +62,16 @@ player.on('trackStart', (queue, track) => {
     embed.setTimestamp();
     embed.setFooter('Made with heart by ShambaC ❤️');
 
-    if(play_embed_send == 0)
+    if(!queue.play_embed_send)
     {
         if(queue.npembed) queue.npembed.delete();
         queue.npembed = await queue.metadata.send({ embeds: [embed], components: [row]  });
-        play_embed_send = 1;
+        queue.play_embed_send = true;
     }
     else
     {          
         queue.npembed.edit({ embeds: [embed], components: [row]  });
-        play_embed_send++;
-        if(play_embed_send == 2)    play_embed_send = 0;
+        queue.play_embed_send = false;
     }
 });
 
@@ -83,21 +81,21 @@ player.on('trackAdd', (queue, track) => {
 
 player.on('botDisconnect', (queue) => {
     queue.metadata.send('I was manually disconnected from the voice channel, clearing queue... ❌');
-    play_embed_send = 0;
+    queue.play_embed_send = false;
     if(queue.npembed) queue.npembed.delete();
     queue.destroy();
 });
 
 player.on('channelEmpty', (queue) => {
     queue.metadata.send('Nobody is in the voice channel, leaving the voice channel... ❌');
-    play_embed_send = 0;
+    queue.play_embed_send = false;
     if(queue.npembed) queue.npembed.delete();
     queue.destroy();
 });
 
 player.on('queueEnd', (queue) => {
     queue.metadata.send('I finished reading the whole queue ✅');
-    play_embed_send = 0;
+    queue.play_embed_send = false;
     if(queue.npembed) queue.npembed.delete();
     queue.destroy();
 });
