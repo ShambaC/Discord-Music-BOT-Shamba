@@ -12,6 +12,7 @@ module.exports = {
         const queue = player.getQueue(message.guild.id);
 
         if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!args[0]) return message.channel.send("Please Enter a timestamp !");
 
         const timeToMS = ms(args.join(' '));
 

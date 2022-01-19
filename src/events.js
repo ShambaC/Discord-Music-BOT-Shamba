@@ -43,7 +43,7 @@ player.on('connectionError', (queue, error) => {
 });
 
 player.on('trackStart', (queue, track) => {
-	if (!client.config.opt.loopMessage && queue.repeatMode !== 0) return;
+	if (!client.config.opt.loopMessage && queue.repeatMode == 'TRACK') return;
     const timestamp = queue.getPlayerTimestamp();
     const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : track.duration;
 
@@ -73,7 +73,7 @@ player.on('trackStart', (queue, track) => {
     {          
         queue.npembed.edit({ embeds: [embed], components: [row]  });
         play_embed_send++;
-        if(play_embed_send == 5)    play_embed_send = 0;
+        if(play_embed_send == 2)    play_embed_send = 0;
     }
 });
 
