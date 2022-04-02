@@ -54,7 +54,7 @@ module.exports = {
 		const embed = new MessageEmbed()
 		.setColor('#2beddd')
 		.setTitle(`**LYRICS | ${firstSong.featuredTitle}**`)
-		.setDescription(lyrics)
+		.setDescription(lyrics.length > 4095 ? lyrics.substr(0, 4092) + '...': lyrics)
 		.setFooter(`Made by ShambaC#3440`)
   
 		message.channel.send({embeds:[embed]}) 
