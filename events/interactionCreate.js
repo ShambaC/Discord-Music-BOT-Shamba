@@ -1,46 +1,47 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const embed = new MessageEmbed();
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const embed = new EmbedBuilder();
 
-const saveButton = new MessageButton();
+const saveButton = new ButtonBuilder();
 saveButton.setLabel('Save this track');
 saveButton.setCustomId('saveTrack');
-saveButton.setStyle('SUCCESS');
+saveButton.setStyle(ButtonStyle.Success);
 
-const nextButton = new MessageButton();
+const nextButton = new ButtonBuilder();
 nextButton.setLabel('Skip');
 nextButton.setCustomId('skipButton');
-nextButton.setStyle('SECONDARY');
+nextButton.setStyle(ButtonStyle.Secondary);
 nextButton.setEmoji('⏭️');
 
-const pauseButton = new MessageButton();
+const pauseButton = new ButtonBuilder();
 pauseButton.setLabel('Pause');
 pauseButton.setCustomId('pauseint');
-pauseButton.setStyle('SECONDARY');
+pauseButton.setStyle(ButtonStyle.Secondary);
 pauseButton.setEmoji('⏸️');
 
-const playButton = new MessageButton();
+const playButton = new ButtonBuilder();
 playButton.setLabel('Resume');
 playButton.setCustomId('playint');
-playButton.setStyle('SECONDARY');
+playButton.setStyle(ButtonStyle.Secondary);
 playButton.setEmoji('▶️');
 
-const stopButton = new MessageButton();
+const stopButton = new ButtonBuilder();
 stopButton.setLabel('Stop');
 stopButton.setCustomId('stopint');
-stopButton.setStyle('DANGER');
+stopButton.setStyle(ButtonStyle.Danger);
 stopButton.setEmoji('⏹️');
 
-const row1 = new MessageActionRow().addComponents(saveButton, nextButton, playButton, stopButton);
-const row2 = new MessageActionRow().addComponents(saveButton, nextButton, pauseButton, stopButton);
+const row1 = new ActionRowBuilder().addComponents(saveButton, nextButton, playButton, stopButton);
+const row2 = new ActionRowBuilder().addComponents(saveButton, nextButton, pauseButton, stopButton);
 
 module.exports = (client, int) => {
     if (!int.isButton()) return;
 
-    const queue = player.getQueue(int.guildId);
+    const queue = player.nodes.get(int.guildId);
+    const track = queue.currentTrack;
 
     switch (int.customId) {
         case 'saveTrack': {
-            if (!queue || !queue.playing) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`,ephemeral: true, components: [] });
+            if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`,ephemeral: true, components: [] });
 
             int.member.send(`You saved the track ${queue.current.title} | ${queue.current.author} from the server ${int.member.guild.name} ✅`).then(() => {
                 return int.reply({ content: `I have sent you the title of the music by private messages <@${int.user.id}> ✅`,ephemeral: true, components: [] });
@@ -50,29 +51,29 @@ module.exports = (client, int) => {
             break;
         }
         case 'skipButton': {
-            if (!queue || !queue.playing) return int.reply({content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
+            if (!queue || !queue.node.isPlaying()) return int.reply({content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
 
-            const success = queue.skip();
+            const success = queue.node.skip();
 
             return int.reply(success ? {content : `Current music ${queue.current.title} skipped ✅`,ephemeral: true, components: [] } : {content :  `Something went wrong <@${int.user.id}>... try again ? ❌`,ephemeral: true, components: [] });
             break;
         }
         case 'pauseint': {
-            if (!queue || !queue.playing) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
+            if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
                    
             const success = queue.setPaused(true);
             if(success)
             {
                 queue.isPaused = true;
-                const timestamp = queue.getPlayerTimestamp();
+                const timestamp = queue.node.getTimestamp();
                 const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : track.duration;
 
-                embed.setColor('RED');
+                embed.setColor('Red');
                 embed.setThumbnail(track.thumbnail);
-                embed.setAuthor(track.title, client.user.displayAvatarURL({ size: 1024, dynamic: true }), track.url);
+                embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }), url: track.url})
                 embed.setDescription(`Status : Paused\nDuration : ${trackDuration}`);
                 embed.setTimestamp();
-                embed.setFooter('Made with heart by ShambaC ❤️');
+                embed.setFooter({text: 'Made with heart by ShambaC ❤️'});
                 queue.npembed.edit({ embeds: [embed], components: [row1]  });
                 return 0;
             }
@@ -82,21 +83,21 @@ module.exports = (client, int) => {
             break;
         }
         case 'playint': {
-            if (!queue || !queue.playing) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
+            if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
                    
             const success = queue.setPaused(false);
             if(success)
             {
                 queue.isPaused = false;
-                const timestamp = queue.getPlayerTimestamp();
+                const timestamp = queue.node.getTimestamp();
                 const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : track.duration;
 
-                embed.setColor('RED');
+                embed.setColor('Red');
                 embed.setThumbnail(track.thumbnail);
-                embed.setAuthor(track.title, client.user.displayAvatarURL({ size: 1024, dynamic: true }), track.url);
+                embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }), url: track.url})
                 embed.setDescription(`Status : Playing\nDuration : ${trackDuration}`);
                 embed.setTimestamp();
-                embed.setFooter('Made with heart by ShambaC ❤️');
+                embed.setFooter({text: 'Made with heart by ShambaC ❤️'});
                 queue.npembed.edit({ embeds: [embed], components: [row2]  });
                 return 0;
             }
@@ -106,10 +107,11 @@ module.exports = (client, int) => {
             break;
         }
         case 'stopint': {
-            if (!queue || !queue.playing) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
+            if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
 
             if(queue.npembed) queue.npembed.delete();
-            queue.destroy();
+            queue.npembed = null;
+            queue.delete();
 
             return int.reply({ content: `Music stopped into this server, see you next time ✅`, components: [] });
             

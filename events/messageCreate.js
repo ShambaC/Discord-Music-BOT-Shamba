@@ -1,7 +1,9 @@
-module.exports = (client, message) => {
-    if (message.author.bot || message.channel.type === 'dm') return;
+const { ChannelType } = require('discord.js')
 
-    const prefix = client.config.app.px;
+module.exports = (client, message) => {
+    if (message.author.bot || message.channel.type === ChannelType.DM) return;
+
+    const prefix = process.env.px;
 
     if (message.content.indexOf(prefix) !== 0) return;
 
@@ -23,7 +25,7 @@ module.exports = (client, message) => {
     if (cmd && cmd.voiceChannel) {
         if (!message.member.voice.channel) return message.channel.send(`You're not in a voice channel ${message.author}... try again ? ❌`);
 
-        if (message.guild.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`You are not in the same voice channel ${message.author}... try again ? ❌`);
+        if (message.guild.members.me.voice.channel && message.member.voice.channel.id !== message.guild.me.voice.channel.id) return message.channel.send(`You are not in the same voice channel ${message.author}... try again ? ❌`);
     }
 
     if (cmd) cmd.execute(client, message, args);
