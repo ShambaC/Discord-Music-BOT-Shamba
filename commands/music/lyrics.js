@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const Genius = require("genius-lyrics");
 const Client = new Genius.Client("token or blank");
 
@@ -10,7 +10,7 @@ module.exports = {
 	description: 'Displays the lyrics of the current track or the track you searched',
 
     async execute(client, message, args) {
-      const queue = player.getQueue(message.guild.id);
+      const queue = player.nodes.get(message.guild.id);
 
       if (!queue && !args[0]) return message.channel.send(`No track in queue or valid search provided ${message.author}... try again ? ❌`);
 	  
@@ -25,7 +25,7 @@ module.exports = {
 	  }
 	  else
 	  {
-		tempterm = queue.current.title;
+		tempterm = queue.currentTrack.title;
 	  }
 
 	 
@@ -49,13 +49,11 @@ module.exports = {
 
 		const lyrics = await firstSong.lyrics();
   
-		
-  
-		const embed = new MessageEmbed()
+		const embed = new EmbedBuilder()
 		.setColor('#2beddd')
 		.setTitle(`**LYRICS | ${firstSong.featuredTitle}**`)
-		.setDescription(lyrics.length > 4095 ? lyrics.substr(0, 4092) + '...': lyrics)
-		.setFooter(`Made by ShambaC#3440`)
+		.setDescription(lyrics.length > 4095 ? lyrics.substring(0, 4093) + '...': lyrics)
+		.setFooter({text: `Made by ShambaC#3440`})
   
 		message.channel.send({embeds:[embed]}) 
 	     

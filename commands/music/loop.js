@@ -9,18 +9,18 @@ module.exports = {
     description: 'Loop the queue or current track',
 
     execute(client, message, args) {
-        const queue = player.getQueue(message.guild.id);
+        const queue = player.nodes.get(message.guild.id);
 
-        if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
 
         if (args.join('').toLowerCase() === 'queue') {
-            if (queue.repeatMode === 1) return message.channel.send(`You must first disable the current music in the loop mode (${client.config.app.px}loop) ${message.author}... try again ? ❌`);
+            if (queue.repeatMode === 1) return message.channel.send(`You must first disable the current music in the loop mode (${process.env.px}loop) ${message.author}... try again ? ❌`);
 
             const success = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.QUEUE : QueueRepeatMode.OFF);
 
             return message.channel.send(success ? `Repeat mode **${queue.repeatMode === 0 ? 'disabled' : 'enabled'}** the whole queue will be repeated endlessly 🔁` : `Something went wrong ${message.author}... try again ? ❌`);
         } else {
-            if (queue.repeatMode === 2) return message.channel.send(`You must first disable the current queue in the loop mode (${client.config.app.px}loop queue) ${message.author}... try again ? ❌`);
+            if (queue.repeatMode === 2) return message.channel.send(`You must first disable the current queue in the loop mode (${process.env.px}loop queue) ${message.author}... try again ? ❌`);
 
             const success = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF);
 

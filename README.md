@@ -1,6 +1,4 @@
-# UPGRADING TO DISCORD-PLAYER 6 AND DJS 14 SOON
-
-# Music-bot
+# 🎵 Music-bot
 
 A complete code to download for a music bot 🎧
 
@@ -10,65 +8,39 @@ You can try out the BOT by inviting it to your server [here](https://discord.com
 
 This Project was made with a fork of Zerio Dev's [Music BOT](https://github.com/ZerioDev/Music-bot).
 
-### Screenshots
+Updated to use discord-player v6 and discord.js v14
+
+## 📸 Screenshots
 ![image](https://user-images.githubusercontent.com/38806897/147191799-b880a8e6-ff5d-4702-84b0-95d23739d8ff.png)
 
 ![image](https://user-images.githubusercontent.com/38806897/147191840-b34d746f-a87b-447d-9610-89013dac8750.png)
 
 
-### ⚡ Configuration
+## ⚡ Configuration
 
-Open the configuration file located in the main folder `config.js`.
+Setup the environment file.
+- Copy the `.env.example` file and rename it to `.env`
+- Edit the file and fill in the details accordingly.
+- Keep the last variable unchanged.
 
-```js
-module.exports = {
-    app: {
-        px: 'XXX',
-        token: 'XXX',
-        playing: 'Game',
-	type: 'Status type',
-    },
-
-    opt: {
-        DJ: {
-            enabled: false,
-            roleName: 'XXX',
-            commands: []
-        },
-        maxVol: 100,
-        loopMessage: false,
-        discordPlayer: {
-            leaveOnEnd: false,
-            leaveOnStop: false,
-            leaveOnEmpty: false,
-            leaveOnEmptyCooldown: 30000,
-            autoSelfDeaf: true,
-			ytdlOptions: {
-                quality: 'highestaudio',
-                highWaterMark: 1 << 25
-            }
-        }
-    }
-};
+```
+px=
+token=
+playing=
+type=
+CLIENT_ID=
+GUILD_ID=
+DP_FORCE_YTDL_MOD="@distube/ytdl-core"
 ```
 
-Basic configuration
-
-- `app/px`, the prefix that will be set to use the bot
-- `app/token`, the token of the bot available on the [Discord Developers](https://discordapp.com/developers/applications) section
-- `app/playing`, the activity of the bot
-- `app/type`, type of the activity status //PLAYING, STREAMING, LISTENING, WATCHING, CUSTOM, COMPETING
-
-DJ mode configuration
-
-- `opt/DJ/enabled`, whether the DJ mode should be activated or not 
-- `opt/DJ/roleName`, the name of the DJ role to be used
-- `opt/DJ/commands`, the list of commands limited to members with the DJ role
-
-Advanced configuration
-
-- `opt/maxVol`, the maximum volume that users can define
-- `opt/discordPlayer`, options used by discord-player
+### Explanations
+- `px`: prefix (No I don't like slash commands as a user so I will never add them)
+- `token`: the token of the bot available on the [Discord Developers](https://discordapp.com/developers/applications) section
+- `playing`: the playing message
+- `type`: activity type (Currently does nothing. Activity types were changed to enum and I am too tired to write switch cases. Edit type directly in `ready.js`)
+- `CLIENT_ID`: don't remember why I added this but you can get it in the application page.
+- `GUILD_ID`: same, don't remember why I added this, ignore.
+- `DP_FORCE_YTDL_MOD`: forces discord-player to use @distube ytdl fork. Don't change this is required as ytdl-core has a bug currently.
 
 Configure the lyrics command
 
@@ -76,15 +48,21 @@ Configure the lyrics command
 - Use your Genius app token here or leave it blank in line 3 : `const Client = new Genius.Client("Token or blank");`
 - Create your Genius client [here](http://genius.com/api-clients)
 
-### 📑 Installation
+<i>Ignore the `config.js` file. Its of no use any longer.</i>
+
+## 📑 Installation
 
 To use the project correctly you will need some tools.
 
 [FFmpeg](https://www.ffmpeg.org) to process audio
 
-[Node JS](https://nodejs.org/en/) (v16) for environment
+[Node JS](https://nodejs.org/en/) (v16.9+) for environment
 
-### 🤖 Commands
+NOTE : If you are on windows, you can either have ffmpeg binaries downloaded and added to path in your system or you can try using the npm package `ffmpeg-static`. But if you are on Linux, do not use the npm package, instead do the following :
+- `sudo apt update`
+- `sudo apt install ffmpeg`
+
+## 🤖 Commands
 
 |       Name       | Description                                                        | Options              |
 |:----------------:|--------------------------------------------------------------------|----------------------|
@@ -113,6 +91,6 @@ To use the project correctly you will need some tools.
 
 Without forgetting of course the code editor ^^
 
-Realized with ❤️ by ShambaC(ShambaC#3440).
+Realized with ❤️ by ShambaC
 
 Contact me on Discord for any help => ShambaC#3440

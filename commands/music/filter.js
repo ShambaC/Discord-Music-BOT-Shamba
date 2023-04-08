@@ -7,13 +7,13 @@ module.exports = {
     description: 'Apply filters to the current queue',
 
     async execute(client, message, args) {
-        const queue = player.getQueue(message.guild.id);
+        const queue = player.nodes.get(message.guild.id);
 
-        if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
 
         const actualFilter = queue.getFiltersEnabled()[0];
 
-        if (!args[0]) return message.channel.send(`Please specify a valid filter to enable or disable ${message.author}... try again ? ❌\n${actualFilter ? `Filter currently active ${actualFilter} (${client.config.app.px}filter ${actualFilter} to disable it).\n` : ''}`);
+        if (!args[0]) return message.channel.send(`Please specify a valid filter to enable or disable ${message.author}... try again ? ❌\n${actualFilter ? `Filter currently active ${actualFilter} (${process.env.px}filter ${actualFilter} to disable it).\n` : ''}`);
 
         const filters = [];
 
@@ -24,11 +24,13 @@ module.exports = {
 
         if (!filter) return message.channel.send(`This filter doesn't exist ${message.author}... try again ? ❌\n${actualFilter ? `Filter currently active ${actualFilter}.\n` : ''}List of available filters ${filters.map(x => `**${x}**`).join(', ')}.`);
 
-        const filtersUpdated = {};
+        // const filtersUpdated = {};
 
-        filtersUpdated[filter] = queue.getFiltersEnabled().includes(filter) ? false : true;
+        // filtersUpdated[filter] = queue.getFiltersEnabled().includes(filter) ? false : true;
 
-        await queue.setFilters(filtersUpdated);
+        // await queue.setFilters(filtersUpdated);
+
+        await queue.filters.ffmpeg.toggle(filter)
 
         message.channel.send(`The filter ${filter} is now **${queue.getFiltersEnabled().includes(filter) ? 'enabled' : 'disabled'}** ✅\n*Reminder the longer the music is, the longer this will take.*`);
     },

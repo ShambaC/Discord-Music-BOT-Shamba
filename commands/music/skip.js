@@ -7,11 +7,11 @@ module.exports = {
     description: 'Skips the current song',
 
     execute(client, message) {
-        const queue = player.getQueue(message.guild.id);
+        const queue = player.nodes.get(message.guild.id);
 
-        if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
 
-        const success = queue.skip();
+        const success = queue.node.skip();
 
         return message.channel.send(success ? `Current music ${queue.current.title} skipped ✅` : `Something went wrong ${message.author}... try again ? ❌`);
     },

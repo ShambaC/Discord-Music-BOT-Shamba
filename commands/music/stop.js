@@ -7,18 +7,17 @@ module.exports = {
     description: 'Stops and disconnects the BOT',
 
     execute(client, message) {
-        const queue = player.getQueue(message.guild.id);
+        const queue = player.nodes.get(message.guild.id);
 
-        if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
 
-        if(!queue.destroyed)
+        if(!queue.deleted)
         {
             queue.play_embed_send = false;
             if(queue.npembed) queue.npembed.delete();
             queue.npembed = null;
-            queue.destroy();
+            queue.delete();
         }
-
         message.channel.send(`Music stopped into this server, see you next time ✅`);
     },
 };

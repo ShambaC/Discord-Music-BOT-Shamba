@@ -13,20 +13,22 @@ module.exports = {
 
         const res = await player.search(args.join(' '), {
             requestedBy: message.member,
-            searchEngine: QueryType.AUTO
+            searchEngine: QueryType.AUTO,
+            fallbackSearchEngine: QueryType.YOUTUBE_SEARCH
         });
 
         if (!res || !res.tracks.length) return message.channel.send(`No results found ${message.author}... try again ? ❌`);
 
-        
-        
-            const queue = await player.createQueue(message.guild, {
-                metadata: message.channel,
-                play_embed_send: false,
-                npembed: null,
-                isPaused: false
-            });
-        
+        const queue = await player.nodes.create(message.guild, {
+            metadata: message.channel,
+            play_embed_send: false,
+            npembed: null,
+            isPaused: false,
+            ytdlOptions: {
+                quality: 'highestaudio',
+                highWaterMark: 1 << 25
+            }
+        });
 
         try {
             if (!queue.connection) await queue.connect(message.member.voice.channel);
@@ -37,8 +39,8 @@ module.exports = {
 
         await message.channel.send(`Loading your ${res.playlist ? 'playlist' : 'track'}... 🎧`);
 
-        res.playlist ? queue.addTracks(res.tracks) : queue.addTrack(res.tracks[0]);
+        res.playlist ? queue.addTrack(res.tracks) : queue.addTrack(res.tracks[0]);
 
-        if (!queue.playing) await queue.play();
+        if (!queue.node.isPlaying()) await queue.node.play();
     },
 };

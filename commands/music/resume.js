@@ -1,36 +1,36 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const embed = new MessageEmbed();
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const embed = new EmbedBuilder();
 
-const saveButton = new MessageButton();
+const saveButton = new ButtonBuilder();
 saveButton.setLabel('Save this track');
 saveButton.setCustomId('saveTrack');
-saveButton.setStyle('SUCCESS');
+saveButton.setStyle(ButtonStyle.Success);
 
-const nextButton = new MessageButton();
+const nextButton = new ButtonBuilder();
 nextButton.setLabel('Skip');
 nextButton.setCustomId('skipButton');
-nextButton.setStyle('SECONDARY');
+nextButton.setStyle(ButtonStyle.Secondary);
 nextButton.setEmoji('⏭️');
 
-const pauseButton = new MessageButton();
+const pauseButton = new ButtonBuilder();
 pauseButton.setLabel('Pause');
 pauseButton.setCustomId('pauseint');
-pauseButton.setStyle('SECONDARY');
+pauseButton.setStyle(ButtonStyle.Secondary);
 pauseButton.setEmoji('⏸️');
 
-const playButton = new MessageButton();
+const playButton = new ButtonBuilder();
 playButton.setLabel('Resume');
 playButton.setCustomId('playint');
-playButton.setStyle('SECONDARY');
+playButton.setStyle(ButtonStyle.Secondary);
 playButton.setEmoji('▶️');
 
-const stopButton = new MessageButton();
+const stopButton = new ButtonBuilder();
 stopButton.setLabel('Stop');
 stopButton.setCustomId('stopint');
-stopButton.setStyle('DANGER');
+stopButton.setStyle(ButtonStyle.Danger);
 stopButton.setEmoji('⏹️');
 
-const row = new MessageActionRow().addComponents(saveButton, nextButton, pauseButton, stopButton);
+const row = new ActionRowBuilder().addComponents(saveButton, nextButton, pauseButton, stopButton);
 
 module.exports = {
     name: 'resume',
@@ -41,25 +41,24 @@ module.exports = {
     description: 'Resumes the track',
 
     execute(client, message) {
-        const queue = player.getQueue(message.guild.id);
+        const queue = player.nodes.get(message.guild.id);
 
         if (!queue) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
 
         const success = queue.setPaused(false);
-
         if(success)
             {
                 queue.isPaused = false;
                 const track = queue.current;
-                const timestamp = queue.getPlayerTimestamp();
+                const timestamp = queue.node.getTimestamp();
                 const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : track.duration;
 
-                embed.setColor('RED');
+                embed.setColor('Red');
                 embed.setThumbnail(track.thumbnail);
-                embed.setAuthor(track.title, client.user.displayAvatarURL({ size: 1024, dynamic: true }), track.url);
+                embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }), url: track.url})
                 embed.setDescription(`Status : Playing\nDuration : ${trackDuration}`);
                 embed.setTimestamp();
-                embed.setFooter('Made with heart by ShambaC ❤️');
+                embed.setFooter({text: 'Made with heart by ShambaC ❤️'});
                 queue.npembed.edit({ embeds: [embed], components: [row]  });
             }
 

@@ -7,9 +7,9 @@ module.exports = {
     description: 'Remove a particular track from queue',
 
     async execute(client, message,args) {
-        const queue = player.getQueue(message.guild.id);
+        const queue = player.nodes.get(message.guild.id);
 
-        if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
 
         if (!queue.tracks[0]) return message.channel.send(`No music in the queue after the current one ${message.author}... try again ? ❌`);
         if(args[0] > queue.tracks.length || args[0] < 1) return message.channel.send("That is not a valid track!... try again ? ❌")
