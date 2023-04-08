@@ -1,3 +1,5 @@
+# UPGRADING TO DISCORD-PLAYER 6 AND DJS 14 SOON
+
 # Music-bot
 
 A complete code to download for a music bot 🎧
