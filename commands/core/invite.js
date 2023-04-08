@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'invite',
@@ -8,18 +8,18 @@ module.exports = {
     description: 'Invite link for the bot',
 
     execute(client, message, args) {
-        const embed = new MessageEmbed();
+        const embed = new EmbedBuilder();
 
-        embed.setColor('BLUE');
-        embed.setAuthor(client.user.username, client.user.displayAvatarURL({ size: 1024, dynamic: true }));
+        embed.setColor('Blue');
+        embed.setAuthor({name: client.user.username, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true })});
 
         
 
         embed.setDescription('Invite');
-        embed.addField('Wanna Invite the bot to your server ?', '[Invite the bot here](Invite link here)', false);
+        embed.addFields({name: 'Wanna Invite the bot to your server ?', value: '[Invite the bot here](Invite link here)', inline: false});
 
         embed.setTimestamp();
-        embed.setFooter('Made with heart by ShambaC ❤️', message.author.avatarURL({ dynamic: true }));
+        embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: message.author.avatarURL({ dynamic: true })});
 
         message.channel.send({ embeds: [embed] });
     },
