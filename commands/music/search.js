@@ -67,7 +67,7 @@ module.exports = {
             else
             {
                 queue.addTrack(res.tracks[choice - 1]);
-                if (!queue.playing) queue.play();
+                if (!queue.node.isPlaying()) queue.node.play();
             }
         })
         .catch(collected => {
@@ -75,6 +75,6 @@ module.exports = {
         });
     })
 
-        if (!queue.playing) await queue.node.play();
+        if (!queue.node.isPlaying()) await queue.node.play();
     },
 };

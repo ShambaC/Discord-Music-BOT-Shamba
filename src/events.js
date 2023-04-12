@@ -36,7 +36,7 @@ const embed = new EmbedBuilder();
 process.on("uncaughtException", function (err) {
     if (!err.stack?.includes("ERR_STREAM_PREMATURE_CLOSE")) {
       console.error(err.stack);
-      exitHandler.bind(null, { exit: true, signal: "uncaughtException" });
+      //exitHandler.bind(null, { exit: true, signal: "uncaughtException" });
     }
   });
 
