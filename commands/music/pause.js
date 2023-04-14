@@ -50,7 +50,7 @@ module.exports = {
         if(success) 
         {
             queue.isPaused = true;
-            const track = queue.current;
+            const track = queue.currentTrack;
             const timestamp = queue.node.getTimestamp();
             const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : track.duration;
 
@@ -63,6 +63,6 @@ module.exports = {
             queue.npembed.edit({ embeds: [embed], components: [row]  });
         }
 
-        return message.channel.send(success ? `Current music ${queue.current.title} paused ✅` : `Something went wrong ${message.author}... try again ? ❌`);
+        return message.channel.send(success ? `Current music ${queue.currentTrack.title} paused ✅` : `Something went wrong ${message.author}... try again ? ❌`);
     },
 };

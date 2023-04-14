@@ -13,6 +13,6 @@ module.exports = {
 
         const success = queue.node.skip();
 
-        return message.channel.send(success ? `Current music ${queue.current.title} skipped ✅` : `Something went wrong ${message.author}... try again ? ❌`);
+        return message.channel.send(success ? `Current music ${queue.currentTrack.title} skipped ✅` : `Something went wrong ${message.author}... try again ? ❌`);
     },
 };
