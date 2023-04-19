@@ -45,7 +45,7 @@ module.exports = {
 
         if (!queue) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
 
-        const success = queue.setPaused(false);
+        const success = queue.node.resume();
         if(success)
             {
                 queue.isPaused = false;

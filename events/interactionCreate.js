@@ -61,7 +61,7 @@ module.exports = (client, int) => {
         case 'pauseint': {
             if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
                    
-            const success = queue.setPaused(true);
+            const success = queue.node.pause();
             if(success)
             {
                 queue.isPaused = true;
@@ -83,9 +83,9 @@ module.exports = (client, int) => {
             break;
         }
         case 'playint': {
-            if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
+            if (!queue) return int.reply({ content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
                    
-            const success = queue.setPaused(false);
+            const success = queue.node.resume();
             if(success)
             {
                 queue.isPaused = false;
