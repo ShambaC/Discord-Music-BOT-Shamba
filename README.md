@@ -42,11 +42,7 @@ DP_FORCE_YTDL_MOD="@distube/ytdl-core"
 - `GUILD_ID`: same, don't remember why I added this, ignore.
 - `DP_FORCE_YTDL_MOD`: forces discord-player to use @distube ytdl fork. Don't change this is required as ytdl-core has a bug currently.
 
-Configure the lyrics command
-
-- Open the `lyrics.js` file under `commands/music`
-- Use your Genius app token here or leave it blank in line 3 : `const Client = new Genius.Client("Token or blank");`
-- Create your Genius client [here](http://genius.com/api-clients)
+<i>No need to configure the lyrics file anymore</i>
 
 <i>Ignore the `config.js` file. Its of no use any longer.</i>
 
