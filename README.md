@@ -1,3 +1,11 @@
+> [!IMPORTANT]
+> This BOT is BROKEN at the moment.<br>
+> The bot will join the vc but will not play a song because of new security implementation from youtube.<br>
+> I will rewrite the bot in a separate branch later and also update to maybe slash commands. <i>(I still hate them)</i><br>
+> Till then, the bot is only useful for getting lyrics.
+
+---
+
 # 🎵 Music-bot
 
 A complete code to download for a music bot 🎧
