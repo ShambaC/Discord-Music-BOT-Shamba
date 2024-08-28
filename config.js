@@ -1,11 +1,4 @@
 module.exports = {
-    app: {
-        px: '>',
-        token: 'your token here',
-        playing: 'Game',
-        type: 'Status type',
-    },
-
     opt: {
         DJ: {
             enabled: false,
@@ -13,11 +6,11 @@ module.exports = {
             commands: ['back', 'clear', 'filter', 'loop', 'pause', 'resume', 'seek', 'shuffle', 'skip', 'stop', 'volume']
         },
         maxVol: 100,
-	loopMessage: false,
+	    loopMessage: false,
         discordPlayer: {
-	    leaveOnEnd: false,
-            leaveOnStop: false,
-            leaveOnEmpty: false,
+	        leaveOnEnd: true,
+            leaveOnStop: true,
+            leaveOnEmpty: true,
             leaveOnEmptyCooldown: 30000,
             autoSelfDeaf: true,
 			ytdlOptions: {

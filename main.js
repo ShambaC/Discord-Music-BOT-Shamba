@@ -17,8 +17,9 @@ client.config = require('./config');
 require("dotenv").config();
 
 global.player = new Player(client, client.config.opt.discordPlayer);
+player.extractors.loadDefault();
 
 require('./src/loader');
-require('./src/events');
+require('./events/Player/events');
 
 client.login(process.env.token);
