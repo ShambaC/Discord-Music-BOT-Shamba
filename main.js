@@ -1,5 +1,6 @@
 const { Player } = require('discord-player');
 const { Client, GatewayIntentBits } = require('discord.js');
+const { YoutubeiExtractor } = require('discord-player-youtubei');
 
 global.client = new Client({
     intents: [
@@ -16,7 +17,10 @@ client.config = require('./config');
 
 require("dotenv").config();
 
-global.player = new Player(client, client.config.opt.discordPlayer);
+const player = new Player(client, client.config.opt.discordPlayer);
+player.extractors.register(YoutubeiExtractor, {
+    authentication: process.env.YTtoken
+})
 player.extractors.loadDefault();
 
 require('./src/loader');
