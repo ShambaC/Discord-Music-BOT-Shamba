@@ -25,7 +25,7 @@ for (const file of playerEvents) {
     const PlayerEvent = require('./events/Player/${file}');
     const txtEvent = `< -> > [Loaded Player Event] <${file.split(".")[0]}>`;
     console.log(txtEvent);
-    player.events.on(file.split(".")[0], DiscordEvent.bind(null, client));
+    player.events.on(file.split(".")[0], PlayerEvent.bind(null, client));
     delete require.cache[require.resolve(`./events/Player/${file}`)];
 }
 
@@ -34,5 +34,5 @@ readdirSync("./commands/").forEach((dirs) => {
         file.endsWith(".js");
     });
 
-    
+
 })
