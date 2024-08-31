@@ -30,7 +30,7 @@ async function btnFn({ int, queue }) {
                 embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }), url: track.url})
                 embed.setDescription(`Status : Playing\nDuration : ${trackDuration}`);
                 embed.setTimestamp();
-                embed.setFooter({text: 'Made with heart by ShambaC ❤️'});
+                embed.setFooter({text: 'Made with ❤️ by ShambaC'});
                 queue.npembed.edit({ embeds: [embed], components: [row]  });
                 return 0;
             }
