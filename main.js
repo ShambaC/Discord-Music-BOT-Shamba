@@ -8,7 +8,6 @@ global.client = new Client({
         GatewayIntentBits.GuildMembers,
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.GuildVoiceStates,
-        GatewayIntentBits.MessageContent
     ],
     disableMentions: 'everyone',
 });
@@ -18,12 +17,11 @@ client.config = require('./config');
 require("dotenv").config();
 
 const player = new Player(client, client.config.opt.discordPlayer);
-player.extractors.register(YoutubeiExtractor, {
-    authentication: process.env.YTtoken
-})
-player.extractors.loadDefault();
+// player.extractors.register(YoutubeiExtractor, {
+//     authentication: process.env.YTtoken
+// });
+// player.extractors.loadDefault();
 
-require('./src/loader');
-require('./events/Player/events');
+require('./loader');
 
 client.login(process.env.token);
