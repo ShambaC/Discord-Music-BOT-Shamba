@@ -1,30 +1,75 @@
-const { QueueRepeatMode } = require('discord-player');
+const { QueueRepeatMode, useQueue } = require('discord-player');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'loop',
-    aliases: ['lp', 'repeat'],
     category: 'Music',
-    utilisation: '{prefix}loop <queue>',
     voiceChannel: true,
-    description: 'Loop the queue or current track',
+    description: ('Loop the queue or current track'),
+    options: [
+        {
+            name: 'action',
+            description: ('Type of loop to perform'),
+            type: ApplicationCommandOptionType.String,
+            required: true,
+            choices: [
+                { name: 'Queue', value: 'enable_loop_queue'},
+                { name: 'Disable', value: 'disable_loop' },
+                { name: 'Track', value: 'enable_loop_track' },
+                { name: 'Autoplay', value: 'enable_autoplay' }
+            ]
+        }
+    ],
 
-    execute(client, message, args) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return int.editReply({ content: `No music currently playing ${int.member}... try again ? ❌` });
 
-        if (args.join('').toLowerCase() === 'queue') {
-            if (queue.repeatMode === 1) return message.channel.send(`You must first disable the current music in the loop mode (${process.env.px}loop) ${message.author}... try again ? ❌`);
+        const embed = new EmbedBuilder();
+        const errMsg = `Something went wrong ${int.member}... try again ? ❌`
 
-            const success = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.QUEUE : QueueRepeatMode.OFF);
+        const choice = int.options.getString('action');
 
-            return message.channel.send(!success ? `Repeat mode **${queue.repeatMode === 0 ? 'disabled' : 'enabled'}** the whole queue will be repeated endlessly 🔁` : `Something went wrong ${message.author}... try again ? ❌`);
-        } else {
-            if (queue.repeatMode === 2) return message.channel.send(`You must first disable the current queue in the loop mode (${process.env.px}loop queue) ${message.author}... try again ? ❌`);
+        if (choice.toLowerCase() === 'enable_loop_queue') {
+            if (queue.repeatMode === QueueRepeatMode.TRACK) return int.editReply({ content: `You must first disable the current music in the loop mode (\`/loop Disable\`) ${int.member}... try again ? ❌` });
 
-            const success = queue.setRepeatMode(queue.repeatMode === 0 ? QueueRepeatMode.TRACK : QueueRepeatMode.OFF);
+            const success = queue.setRepeatMode(QueueRepeatMode.QUEUE);
 
-            return message.channel.send(!success ? `Repeat mode **${queue.repeatMode === 0 ? 'disabled' : 'enabled'}** the current music will be repeated endlessly (you can loop the queue with the <queue> option) 🔂` : `Something went wrong ${message.author}... try again ? ❌`);
-        };
+            embed.setColor(success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: success ? `Repeat mode enabled, the whole queue will be repeated endlessly 🔁` : errMsg });
+
+            return int.editReply({ embeds: [embed] });    
+        }
+        else if (choice.toLowerCase() === 'disable_loop') {
+            if (queue.repeatMode === QueueRepeatMode.OFF) return int.editReply({ content: `You must first enable the loop mode <(/loop Queue or /loop Song)> ${int.member}... try again ? ❌` });
+
+            const success = queue.setRepeatMode(QueueRepeatMode.OFF);
+
+            embed.setColor(success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: success ? `Repeat mode disabled, the queue will no longer be repeated 🔁` : errMsg });
+
+            return int.editReply({ embeds: [embed] });
+        }
+        else if (choice.toLowerCase() === 'enable_loop_track') {
+            if (queue.repeatMode === QueueRepeatMode.QUEUE) return int.editReply({ content: `You must first disable the current music in the loop mode (\`/loop Disable\`) ${int.member}... try again ? ❌` });
+
+            const success = queue.setRepeatMode(QueueRepeatMode.TRACK);
+
+            embed.setColor(success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: success ? `Repeat mode enabled, the current track will be repeated 🔂` : errMsg });
+
+            return int.editReply({ embeds: [embed] });
+        }
+        else if (choice.toLowerCase() === 'enable_autoplay') {
+            if (queue.repeatMode === QueueRepeatMode.QUEUE) return int.editReply({ content: `You must first disable the current music in the loop mode (\`/loop Disable\`) ${int.member}... try again ? ❌` });
+
+            const success = queue.setRepeatMode(QueueRepeatMode.AUTOPLAY);
+
+            embed.setColor(success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: success ? `AutoPlay enabled, will play similar songs 🔁` : errMsg });
+
+            return int.editReply({ embeds: [embed] });
+        }
     },
 };

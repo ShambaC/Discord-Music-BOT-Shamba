@@ -20,7 +20,7 @@ const player = new Player(client, client.config.opt.discordPlayer);
 // player.extractors.register(YoutubeiExtractor, {
 //     authentication: process.env.YTtoken
 // });
-// player.extractors.loadDefault();
+player.extractors.loadDefault();
 
 require('./loader');
 

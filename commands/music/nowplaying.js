@@ -2,11 +2,9 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 
 module.exports = {
     name: 'nowplaying',
-    aliases: ['np'],
     category: 'Music',
-    utilisation: '{prefix}nowplaying',
     voiceChannel: true,
-    description: 'Shows the currently playing track details with buttons',
+    description: ('Shows the currently playing track details with buttons'),
 
     execute(client, message) {
         const queue = player.nodes.get(message.guild.id);

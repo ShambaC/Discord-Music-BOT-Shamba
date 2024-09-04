@@ -16,10 +16,10 @@ module.exports = {
     async execute({ int, client }) {
 
         const embed = new EmbedBuilder();
+        const commandArg = int.options.getString('command');
 
-        if (int.options.getString('command')) {
-            const arg = int.options.getString('command');
-            const command = client.commands.get(arg.join(" ").toLowerCase()) || client.commands.find(x => x.aliases && x.aliases.includes(arg.join(" ").toLowerCase()));
+        if (commandArg) {
+            const command = client.commands.get(commandArg.toLowerCase());
             if (!command) {
                 embed.setColor('red');
                 embed.setDescription(`❌ | I did not find this command !`);
@@ -32,11 +32,11 @@ module.exports = {
             embed.setDescription(command.description);
 
             embed.addFields({name: 'Name', value: command.name, inline: true});
-            embed.addFields({name: 'Category', value: command.category, inline: true});            
-            embed.addFields({name: "Options", value: command.options.map((option) => option.name).join(', '), inline: true});
+            embed.addFields({name: 'Category', value: command.category, inline: true});
+            // embed.addFields({name: "Options", value: command.options.map((option) => option.name).join(', '), inline: true});
 
             embed.setTimestamp();
-            embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: message.author.avatarURL({ dynamic: true })});
+            embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: int.user.avatarURL({ dynamic: true })});
 
             int.editReply({ embeds: [embed] });
         }
@@ -51,7 +51,7 @@ module.exports = {
             embed.addFields({name: 'Music', value: music});
 
             embed.setTimestamp();
-            embed.setFooter({text: 'Made with ❤️ by ShambaC', iconURL: message.author.avatarURL()});
+            embed.setFooter({text: 'Made with ❤️ by ShambaC', iconURL: int.user.avatarURL()});
 
             int.editReply({ embeds: [embed] });
         }

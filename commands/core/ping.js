@@ -5,7 +5,7 @@ module.exports = {
     category: 'Core',
     description: (`Check the ping of the bot`),
 
-    async execute({ client, int }) {
+    async execute({ int, client }) {
         await int.editReply("Pong?");
         int.editReply(`Last heartbeat calculated ${ms(Date.now() - client.ws.shards.first().lastPingTimestamp, { long: true })} ago **${client.ws.ping}ms** 🛰️`);
     }

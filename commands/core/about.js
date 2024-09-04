@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = {
     name: 'about',
     category: 'Core',
-    description: 'Shows info about the BOT',
+    description: ('Shows info about the BOT'),
 
     async execute({ int, client }) {
         const embed = new EmbedBuilder();
@@ -16,7 +16,7 @@ module.exports = {
         embed.addFields({name: 'Invite', value: '[Invite the bot here](Invite link here)', inline: true});
 
         embed.setTimestamp();
-        embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: message.author.avatarURL()});
+        embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: int.user.avatarURL()});
 
         int.editReply({ embeds: [embed] });
     },

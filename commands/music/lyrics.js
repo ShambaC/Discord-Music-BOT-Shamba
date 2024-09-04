@@ -1,33 +1,36 @@
-const { EmbedBuilder } = require('discord.js');
+const { useQueue } = require('discord-player');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: 'lyrics',
-    aliases: [],
 	category: 'Music',
-    utilisation: '{prefix}lyrics [song name]',
-	description: 'Displays the lyrics of the current track or the track you searched',
+	description: ('Displays the lyrics of the current track or the track you searched'),
+	options: [
+		{
+			name: 'title',
+			description: 'Song name you want to see the lyrics for',
+			type: ApplicationCommandOptionType.String,
+			required: false
+		}
+	],
 
-    async execute(client, message, args) {
-		const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+		const queue = useQueue(int.guild);
 
-		if (!queue && !args[0]) return message.channel.send(`No track in queue or valid search provided ${message.author}... try again ? ❌`);
-		
+		const songArg = int.options.getString('title');
+
+		if (!queue && !songArg) return int.editReply({ content: `No track in queue or valid search provided ${int.member}... try again ? ❌` });
 		
 		var tempterm;
 
-		message.channel.sendTyping();
-
-		if(args[0])
+		if(songArg)
 		{
-			tempterm = args.join(' ');
+			tempterm = songArg.toString();
 		}
 		else
 		{
 			tempterm = queue.currentTrack.title;
 		}
-
-		
-		var searches = null;
 		
 		if(tempterm.includes('('))
 		{
@@ -49,12 +52,12 @@ module.exports = {
 						.setDescription(lyrics.length > 4095 ? lyrics.substring(0, 4093) + '...': lyrics)
 						.setFooter({text: `Made by ShambaC#3440`})
 					
-						message.channel.send({embeds:[embed]}) 
+						int.editReply({ embeds : [embed] }) 
 					})
 			})
 			.catch(err => {
 				console.log(err)
-				return message.channel.send(`🚫 | Couldn' find lyrics for this song! Please retry or search for an other track!`)
+				return int.editReply({ content: `🚫 | Couldn' find lyrics for this song! Please retry or search for an other track!` });
 			})
 	},
 };

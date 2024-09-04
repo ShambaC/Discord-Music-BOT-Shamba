@@ -1,15 +1,14 @@
+const { useQueue } = require("discord-player");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
     name: 'back',
-    aliases: ['previous'],
     category: 'Music',
-    utilisation: '{prefix}back',
     voiceChannel: true,
-    description: 'Play the previous song',
+    description: ('Play the previous song'),
 
-    async execute({ int }) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
         const embed = new EmbedBuilder()
             .setColor("Red");

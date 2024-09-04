@@ -1,20 +1,25 @@
+const { useQueue } = require("discord-player");
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
     name: 'clear',
-    aliases: ['cq'],
     category: 'Music',
-    utilisation: '{prefix}clear',
     voiceChannel: true,
-    description: 'Clear the queue',
+    description: ('Clear the queue'),
 
-    async execute(client, message) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return int.editReply({ content: `No music currently playing ${int.member}... try again ? ❌` });
 
-        if (!queue.tracks[0]) return message.channel.send(`No music in the queue after the current one ${message.author}... try again ? ❌`);
+        if (!queue.tracks.toArray()[1]) return int.editReply({ content: `No music in the queue after the current one ${int.member}... try again ? ❌` });
 
-        await queue.tracks.clear();
+        queue.tracks.clear();
 
-        message.channel.send(`The queue has just been cleared 🗑️`);
+        const embed = new EmbedBuilder()
+            .setColor('#68f298')
+            .setAuthor({ name: `The queue has just been cleared 🗑️` });
+
+        int.editReply({ embeds: [embed] });
     },
 };
