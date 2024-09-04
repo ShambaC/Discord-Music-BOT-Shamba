@@ -2,12 +2,11 @@ const ms = require('ms');
 
 module.exports = {
     name: 'ping',
-    aliases: [],
     category: 'Core',
-    utilisation: '{prefix}ping',
-    description: `Check the ping of the BOT`,
+    description: (`Check the ping of the bot`),
 
-    execute(client, message) {
-        message.channel.send(`Last heartbeat calculated ${ms(Date.now() - client.ws.shards.first().lastPingTimestamp, { long: true })} ago **${client.ws.ping}ms** 🛰️`);
-    },
+    async execute({ client, int }) {
+        await int.editReply("Pong?");
+        int.editReply(`Last heartbeat calculated ${ms(Date.now() - client.ws.shards.first().lastPingTimestamp, { long: true })} ago **${client.ws.ping}ms** 🛰️`);
+    }
 };

@@ -1,38 +1,5 @@
 const { useQueue } = require('discord-player');
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, InteractionType } = require('discord.js');
-const embed = new EmbedBuilder();
-
-const saveButton = new ButtonBuilder();
-saveButton.setLabel('Save this track');
-saveButton.setCustomId('saveTrack');
-saveButton.setStyle(ButtonStyle.Success);
-
-const nextButton = new ButtonBuilder();
-nextButton.setLabel('Skip');
-nextButton.setCustomId('skipButton');
-nextButton.setStyle(ButtonStyle.Secondary);
-nextButton.setEmoji('⏭️');
-
-const pauseButton = new ButtonBuilder();
-pauseButton.setLabel('Pause');
-pauseButton.setCustomId('pauseint');
-pauseButton.setStyle(ButtonStyle.Secondary);
-pauseButton.setEmoji('⏸️');
-
-const playButton = new ButtonBuilder();
-playButton.setLabel('Resume');
-playButton.setCustomId('playint');
-playButton.setStyle(ButtonStyle.Secondary);
-playButton.setEmoji('▶️');
-
-const stopButton = new ButtonBuilder();
-stopButton.setLabel('Stop');
-stopButton.setCustomId('stopint');
-stopButton.setStyle(ButtonStyle.Danger);
-stopButton.setEmoji('⏹️');
-
-const row1 = new ActionRowBuilder().addComponents(saveButton, nextButton, playButton, stopButton);
-const row2 = new ActionRowBuilder().addComponents(saveButton, nextButton, pauseButton, stopButton);
+const { EmbedBuilder, InteractionType } = require('discord.js');
 
 module.exports = async (client, int) => {
     if (int.type === InteractionType.ApplicationCommand) {

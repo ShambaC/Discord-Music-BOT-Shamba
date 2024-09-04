@@ -3,7 +3,7 @@ const { Collection } = require('discord.js');
 const { useMainPlayer } = require('discord-player');
 
 client.commands = new Collection();
-const commandArray = [];
+const commandsArray = [];
 const player = useMainPlayer();
 
 const discordEvents = readdirSync("./events/Discord/").filter((file) => {
@@ -34,5 +34,22 @@ readdirSync("./commands/").forEach((dirs) => {
         file.endsWith(".js");
     });
 
+    for (const file of commands) {
+        const command = require(`./commands/${dirs}/${file}`);
+        if (command.name && command.description) {
+            commandsArray.push(command);
+            const txtEvent = `< -> > [Loaded Command] <${command.name.toLowerCase()}>`;
+            console.log(txtEvent);
+            client.commands.set(command.name.toLowerCase(), command);
+            delete require.cache[require.resolve(`./commands/${dirs}/${file}`)];
+        }
+        else {
+            const txtEvent = `< -> > [Failed Command] <${command.name.toLowerCase()}>`;
+            console.log(txtEvent);
+        }
+    }
+});
 
-})
+client.on("ready", (client) => {
+    client.application.commands.set(commandsArray);
+});

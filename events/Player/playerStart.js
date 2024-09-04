@@ -17,7 +17,7 @@ module.exports = (queue, track) => {
 
         embed.setColor('Red');
         embed.setThumbnail(track.thumbnail);
-        embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }), url: track.url})
+        embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024 }), url: track.url})
 
         if(queue.isPaused)
             {
