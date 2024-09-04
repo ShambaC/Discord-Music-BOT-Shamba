@@ -1,6 +1,6 @@
 const { Player } = require('discord-player');
 const { Client, GatewayIntentBits } = require('discord.js');
-const { YoutubeiExtractor } = require('discord-player-youtubei');
+// const { YoutubeiExtractor } = require('discord-player-youtubei');
 
 global.client = new Client({
     intents: [

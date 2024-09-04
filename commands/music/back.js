@@ -1,3 +1,5 @@
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
     name: 'back',
     aliases: ['previous'],
@@ -6,15 +8,21 @@ module.exports = {
     voiceChannel: true,
     description: 'Play the previous song',
 
-    async execute(client, message) {
+    async execute({ int }) {
         const queue = player.nodes.get(message.guild.id);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        const embed = new EmbedBuilder()
+            .setColor("Red");
 
-        if (!queue.previousTracks[1]) return message.channel.send(`There was no music played before ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return int.editReply({ embeds: [embed.setAuthor({ name: `No music currently playing ${message.author}... try again ? ❌` })] });
+
+        if (!queue.history.previousTrack) return int.editReply({ embeds: [embed.setAuthor({ name: `There was no music played before ${message.author}... try again ? ❌`})] });
 
         await queue.history.back();
 
-        message.channel.send(`Playing the **previous** track ✅`);
+        embed.setColor('#68f298');
+        embed.setAuthor({ name: `Playing the **previous** track ✅` });
+
+        int.editReply({ embeds: [embed] });
     },
 };

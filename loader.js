@@ -7,14 +7,14 @@ const commandsArray = [];
 const player = useMainPlayer();
 
 const discordEvents = readdirSync("./events/Discord/").filter((file) => {
-    file.endsWith(".js");
+    return file.endsWith(".js");
 });
 const playerEvents = readdirSync("./events/Player/").filter((file) => {
-    file.endsWith(".js");
+    return file.endsWith(".js");
 });
 
 for (const file of discordEvents) {
-    const DiscordEvent = require('./events/Discord/${file}');
+    const DiscordEvent = require(`./events/Discord/${file}`);
     const txtEvent = `< -> > [Loaded Discord Event] <${file.split(".")[0]}>`;
     console.log(txtEvent);
     client.on(file.split(".")[0], DiscordEvent.bind(null, client));
@@ -22,7 +22,7 @@ for (const file of discordEvents) {
 }
 
 for (const file of playerEvents) {
-    const PlayerEvent = require('./events/Player/${file}');
+    const PlayerEvent = require(`./events/Player/${file}`);
     const txtEvent = `< -> > [Loaded Player Event] <${file.split(".")[0]}>`;
     console.log(txtEvent);
     player.events.on(file.split(".")[0], PlayerEvent.bind(null, client));
@@ -31,7 +31,7 @@ for (const file of playerEvents) {
 
 readdirSync("./commands/").forEach((dirs) => {
     const commands = readdirSync(`./commands/${dirs}`).filter((file) => {
-        file.endsWith(".js");
+        return file.endsWith(".js");
     });
 
     for (const file of commands) {
