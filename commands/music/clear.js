@@ -10,9 +10,9 @@ module.exports = {
     async execute({ int, client }) {
         const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return int.editReply({ content: `No music currently playing ${int.member}... try again ? ❌` });
+        if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
-        if (!queue.tracks.toArray()[1]) return int.editReply({ content: `No music in the queue after the current one ${int.member}... try again ? ❌` });
+        if (!queue.tracks.toArray()[1]) return int.reply({ content: `No music in the queue after the current one ${int.member}... try again ? ❌`, ephemeral: true });
 
         queue.tracks.clear();
 
@@ -20,6 +20,6 @@ module.exports = {
             .setColor('#68f298')
             .setAuthor({ name: `The queue has just been cleared 🗑️` });
 
-        int.editReply({ embeds: [embed] });
+        int.reply({ embeds: [embed], ephemeral: false });
     },
 };

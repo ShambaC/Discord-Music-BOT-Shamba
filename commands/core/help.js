@@ -21,9 +21,9 @@ module.exports = {
         if (commandArg) {
             const command = client.commands.get(commandArg.toLowerCase());
             if (!command) {
-                embed.setColor('red');
+                embed.setColor('Red');
                 embed.setDescription(`❌ | I did not find this command !`);
-                return int.editReply({ embeds: [embed] });
+                return int.reply({ embeds: [embed], ephemeral: true });
             }
 
             embed.setColor('Red');
@@ -38,7 +38,7 @@ module.exports = {
             embed.setTimestamp();
             embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: int.user.avatarURL({ dynamic: true })});
 
-            int.editReply({ embeds: [embed] });
+            int.reply({ embeds: [embed], ephemeral: true });
         }
         else {
             embed.setColor('Red');
@@ -53,7 +53,7 @@ module.exports = {
             embed.setTimestamp();
             embed.setFooter({text: 'Made with ❤️ by ShambaC', iconURL: int.user.avatarURL()});
 
-            int.editReply({ embeds: [embed] });
+            int.reply({ embeds: [embed], ephemeral: false });
         }
     }
 };

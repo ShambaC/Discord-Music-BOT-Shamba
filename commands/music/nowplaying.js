@@ -1,4 +1,10 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { useQueue } = require('discord-player');
+const { EmbedBuilder, ActionRowBuilder} = require('discord.js');
+
+const { playPauseBtn } = require('../../buttons/playPause');
+const { saveBtn } = require('../../buttons/saveTrack');
+const { skipBtn } = require('../../buttons/skip');
+const { stopBtn } = require('../../buttons/stop');
 
 module.exports = {
     name: 'nowplaying',
@@ -6,10 +12,10 @@ module.exports = {
     voiceChannel: true,
     description: ('Shows the currently playing track details with buttons'),
 
-    execute(client, message) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
         const track = queue.currentTrack;
 
@@ -17,49 +23,22 @@ module.exports = {
 
         embed.setColor('Red');
         embed.setThumbnail(track.thumbnail);
-        embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }), url: track.url})
+        embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024 }), url: track.url})
 
-        const methods = ['disabled', 'track', 'queue'];
+        const methods = ['disabled', 'track', 'queue', 'autoplay'];
 
         const timestamp = queue.node.getTimestamp();
         const trackDuration = timestamp.progress == 'Infinity' ? 'infinity (live)' : track.duration;
 
-        embed.setDescription(`Volume **${queue.volume}**%\nDuration **${trackDuration}**\nLoop mode **${methods[queue.repeatMode]}**\nRequested by ${track.requestedBy}`);
+        const progress = queue.node.createProgressBar();
+
+        embed.setDescription(`Volume **${queue.node.volume}**%\nDuration **${trackDuration}**\nProgress ${progress}\nLoop mode **${methods[queue.repeatMode]}**\nRequested by ${track.requestedBy}`);
 
         embed.setTimestamp();
-        embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: message.author.avatarURL({ dynamic: true })});
+        embed.setFooter({text: 'Made with ❤️ by ShambaC', iconURL: int.user.avatarURL()});
 
-        const saveButton = new ButtonBuilder();
-        saveButton.setLabel('Save this track');
-        saveButton.setCustomId('saveTrack');
-        saveButton.setStyle(ButtonStyle.Success);
+        const row = new ActionRowBuilder().addComponents(saveBtn, playPauseBtn, skipBtn, stopBtn);
 
-        const nextButton = new ButtonBuilder();
-        nextButton.setLabel('Skip');
-        nextButton.setCustomId('skipButton');
-        nextButton.setStyle(ButtonStyle.Secondary);
-        nextButton.setEmoji('⏭️');
-
-        const pauseButton = new ButtonBuilder();
-        pauseButton.setLabel('Pause');
-        pauseButton.setCustomId('pauseint');
-        pauseButton.setStyle(ButtonStyle.Secondary);
-        pauseButton.setEmoji('⏸️');
-
-        const playButton = new ButtonBuilder();
-        playButton.setLabel('Resume');
-        playButton.setCustomId('playint');
-        playButton.setStyle(ButtonStyle.Secondary);
-        playButton.setEmoji('▶️');
-
-        const stopButton = new ButtonBuilder();
-        stopButton.setLabel('Stop');
-        stopButton.setCustomId('stopint');
-        stopButton.setStyle(ButtonStyle.Danger);
-        stopButton.setEmoji('⏹️');
-
-        const row = new ActionRowBuilder().addComponents(saveButton, nextButton, pauseButton, playButton, stopButton);
-
-        message.channel.send({ embeds: [embed], components: [row] });
+        int.reply({ embeds: [embed], components: [row], ephemeral: false });
     },
 };

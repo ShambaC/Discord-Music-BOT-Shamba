@@ -1,33 +1,39 @@
-const { QueryType } = require('discord-player');
+const { QueryType, useMainPlayer } = require('discord-player');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'playfile',
-    aliases: ['pf'],
     category: 'Music',
-    utilisation: '{prefix}playfile',
     voiceChannel: true,
-    description: 'Play the file attached to this command message',
-
-    async execute(client, message, args) {
-
-        var attached_song = message.attachments.first();
-
-        if(attached_song == null)
+    description: ('Play the file attached to this command message'),
+    options: [
         {
-            return message.channel.send(`Please attach a music file ❌`);
+            name: 'file',
+            description: ('file you want to play'),
+            required: true,
+            type: ApplicationCommandOptionType.Attachment
         }
+    ],
+
+    async execute({ int, client }) {
+
+        var attached_song = int.getAttachment('file');
 
         var attached_song_url = attached_song.url;
+        const player = useMainPlayer()
 
         const res = await player.search(attached_song_url, {
-            requestedBy: message.member,
+            requestedBy: int.member,
             searchEngine: QueryType.AUTO
         });
 
-        if (!res || !res.tracks.length) return message.channel.send(`Not a valid file ${message.author}... try again ? ❌`);
+        const embed = new EmbedBuilder()
+            .setColor('Red');
 
-        const queue = await player.nodes.create(message.guild, {
-            metadata: message.channel,
+        if (!res || !res.tracks.length) return int.reply({ embeds: [embed.setAuthor({ name: `Not a valid file ${int.member}... try again ? ❌` })], ephemeral: true });
+
+        const queue = await player.nodes.create(int.guild, {
+            metadata: int.channel,
             play_embed_send: false,
             npembed: null,
             isPaused: false,
@@ -39,13 +45,13 @@ module.exports = {
         
 
         try {
-            if (!queue.connection) await queue.connect(message.member.voice.channel);
+            if (!queue.connection) await queue.connect(int.member.voice.channel);
         } catch {
             await player.deleteQueue(message.guild.id);
-            return message.channel.send(`I can't join the voice channel ${message.author}... try again ? ❌`);
+            return int.reply({ embeds: [embed.setAuthor({ name: `I can't join the voice channel ${int.member}... try again ? ❌` })], ephemeral: true });
         }
 
-        await message.channel.send(`Loading your ${res.playlist ? 'playlist' : 'track'}... 🎧`);
+        await int.reply({ embeds: [embed.setAuthor({ name: `Loading your ${res.playlist ? 'playlist' : 'track'}... 🎧` })], ephemeral: false });
 
         res.playlist ? queue.addTrack(res.tracks) : queue.addTrack(res.tracks[0]);
 

@@ -1,49 +1,24 @@
-const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
+
+const { playPauseBtn } = require('../../buttons/playPause');
+const { saveBtn } = require('../../buttons/saveTrack');
+const { skipBtn } = require('../../buttons/skip');
+const { stopBtn } = require('../../buttons/stop');
+const { useQueue } = require('discord-player');
+
 const embed = new EmbedBuilder();
-
-const saveButton = new ButtonBuilder();
-saveButton.setLabel('Save this track');
-saveButton.setCustomId('saveTrack');
-saveButton.setStyle(ButtonStyle.Success);
-
-const nextButton = new ButtonBuilder();
-nextButton.setLabel('Skip');
-nextButton.setCustomId('skipButton');
-nextButton.setStyle(ButtonStyle.Secondary);
-nextButton.setEmoji('⏭️');
-
-const pauseButton = new ButtonBuilder();
-pauseButton.setLabel('Pause');
-pauseButton.setCustomId('pauseint');
-pauseButton.setStyle(ButtonStyle.Secondary);
-pauseButton.setEmoji('⏸️');
-
-const playButton = new ButtonBuilder();
-playButton.setLabel('Resume');
-playButton.setCustomId('playint');
-playButton.setStyle(ButtonStyle.Secondary);
-playButton.setEmoji('▶️');
-
-const stopButton = new ButtonBuilder();
-stopButton.setLabel('Stop');
-stopButton.setCustomId('stopint');
-stopButton.setStyle(ButtonStyle.Danger);
-stopButton.setEmoji('⏹️');
-
-const row = new ActionRowBuilder().addComponents(saveButton, nextButton, pauseButton, stopButton);
+const row = new ActionRowBuilder().addComponents(saveBtn, playPauseBtn, skipBtn, stopBtn);
 
 module.exports = {
     name: 'resume',
-    aliases: ['rs'],
     category: 'Music',
-    utilisation: '{prefix}resume',
     voiceChannel: true,
-    description: 'Resumes the track',
+    description: ('Resumes the track'),
 
-    execute(client, message) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
         const success = queue.node.resume();
         if(success)
@@ -55,13 +30,17 @@ module.exports = {
 
                 embed.setColor('Red');
                 embed.setThumbnail(track.thumbnail);
-                embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true }), url: track.url})
+                embed.setAuthor({name: track.title, iconURL: client.user.displayAvatarURL({ size: 1024 }), url: track.url})
                 embed.setDescription(`Status : Playing\nDuration : ${trackDuration}`);
                 embed.setTimestamp();
-                embed.setFooter({text: 'Made with heart by ShambaC ❤️'});
+                embed.setFooter({text: 'Made with ❤️ by ShambaC'});
                 queue.npembed.edit({ embeds: [embed], components: [row]  });
             }
 
-        return message.channel.send(success ? `Current music ${queue.currentTrack.title} resumed ✅` : `Something went wrong ${message.author}... try again ? ❌`);
+        const resumeEmbed = new EmbedBuilder()
+            .setColor('Red')
+            .setAuthor({ name: success ? `Current music ${queue.currentTrack.title} resumed ✅` : `Something went wrong ${int.member}... try again ? ❌` });
+
+        return int.reply({ embeds: [resumeEmbed], ephemeral: false });
     },
 };

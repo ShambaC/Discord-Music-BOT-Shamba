@@ -1,20 +1,34 @@
+const { useQueue } = require("discord-player");
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
     name: 'save',
-    aliases: ['sv'],
     category: 'Music',
-    utilisation: '{prefix}save',
     voiceChannel: true,
-    description: 'Saves the name of the track to user\'s DMs',
+    description: ('Saves the name of the track to user\'s DMs'),
 
-    async execute(client, message) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
-        message.author.send(`You saved the track ${queue.currentTrack.title} | ${queue.currentTrack.author} from the server ${message.guild.name} ✅`).then(() => {
-            message.channel.send(`I have sent you the title of the music by private messages ✅`);
+        const embed = new EmbedBuilder()
+            .setColor('#68f298')
+            .setTitle(`➡️ | ${queue.currentTrack.title}`)
+            .setURL(queue.currentTrack.url)
+            .addFields(
+                { name: `Duration ⏳`, value: `${queue.currentTrack.duration}`, inline: true },
+                { name: 'Song by:', value: `${queue.currentTrack.author}`, inline: true },
+                { name: 'Song URL:', value: `${queue.currentTrack.url}` }
+            )
+            .setThumbnail(queue.currentTrack.thumbnail)
+            .setFooter({ text: `From the server ${int.member.guild.name}`, iconURL: int.member.guild.iconURL() });
+
+        int.member.send({ embeds: [embed] })
+        .then(() => {
+            int.reply({ content: `I have sent you the title of the music by private messages ✅`, ephemeral: true });
         }).catch(error => {
-            message.channel.send(`Unable to send you a private message ${message.author}... try again ? ❌`);
+            int.reply({ content: `Unable to send you a private message ... try again ? ❌`, ephemeral: true });
         });
     },
 };

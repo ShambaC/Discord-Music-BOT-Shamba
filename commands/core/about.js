@@ -18,6 +18,6 @@ module.exports = {
         embed.setTimestamp();
         embed.setFooter({text: 'Made with heart by ShambaC ❤️', iconURL: int.user.avatarURL()});
 
-        int.editReply({ embeds: [embed] });
+        int.reply({ embeds: [embed], ephemeral: false });
     },
 };

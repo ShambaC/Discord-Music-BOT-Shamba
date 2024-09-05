@@ -51,5 +51,7 @@ readdirSync("./commands/").forEach((dirs) => {
 });
 
 client.on("ready", (client) => {
-    client.application.commands.set(commandsArray);
+    // client.application.commands.set(commandsArray);
+
+    client.guilds.cache.get('1048076055874916512').commands.set(commandsArray);
 });

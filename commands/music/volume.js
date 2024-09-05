@@ -1,28 +1,39 @@
+const { useQueue } = require("discord-player");
+const { ApplicationCommandOptionType } = require("discord.js");
+
 const maxVol = client.config.opt.maxVol;
 
 module.exports = {
     name: 'volume',
-    aliases: ['vol'],
     category: 'Music',
-    utilisation: `{prefix}volume [1-${maxVol}]`,
     voiceChannel: true,
-    description: 'Set internal volume of the BOT',
+    description: ('Set internal volume of the BOT'),
+    options: [
+        {
+            name: 'volume',
+            description: ('New volume to set'),
+            type: ApplicationCommandOptionType.Number,
+            required: true,
+            min_value: 1,
+            max_value: maxVol
+        }
+    ],
 
-    execute(client, message, args) {
-        const queue = player.getQueue(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.playing) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue || !queue.playing) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
-        const vol = parseInt(args[0]);
+        const vol = int.options.getNumber('volume');
 
-        if (!vol) return message.channel.send(`The current volume is ${queue.volume} 🔊\n*To change the volume enter a valid number between **1** and **${maxVol}**.*`);
-
-        if (queue.volume === vol) return message.channel.send(`The volume you want to change is already the current one ${message.author}... try again ? ❌`);
-
-        if (vol < 0 || vol > maxVol) return message.channel.send(`The specified number is not valid. Enter a number between **1** and **${maxVol}** ${message.author}... try again ? ❌`);
+        if (queue.volume === vol) return int.reply({ content: `The volume you want to change is already the current one ${int.member}... try again ? ❌`, ephemeral: true });
 
         const success = queue.setVolume(vol);
 
-        return message.channel.send(success ? `The volume has been modified to **${vol}**/**${maxVol}**% 🔊` : `Something went wrong ${message.author}... try again ? ❌`);
+        const embed = new EmbedBuilder()
+            .setColor('#68f298')
+            .setAuthor({ name: success ? `The volume has been modified to **${vol}**/**${maxVol}**% 🔊` : `Something went wrong ${int.member}... try again ? ❌` });
+
+        return int.reply({ embeds: [embed], ephemeral: false });
     },
 };

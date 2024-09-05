@@ -19,7 +19,7 @@ module.exports = {
 
 		const songArg = int.options.getString('title');
 
-		if (!queue && !songArg) return int.editReply({ content: `No track in queue or valid search provided ${int.member}... try again ? ❌` });
+		if (!queue && !songArg) return int.reply({ content: `No track in queue or valid search provided ${int.member}... try again ? ❌`, ephemeral: true });
 		
 		var tempterm;
 
@@ -52,12 +52,12 @@ module.exports = {
 						.setDescription(lyrics.length > 4095 ? lyrics.substring(0, 4093) + '...': lyrics)
 						.setFooter({text: `Made by ShambaC#3440`})
 					
-						int.editReply({ embeds : [embed] }) 
+						int.reply({ embeds : [embed], ephemeral : false }) 
 					})
 			})
 			.catch(err => {
 				console.log(err)
-				return int.editReply({ content: `🚫 | Couldn' find lyrics for this song! Please retry or search for an other track!` });
+				return int.reply({ content: `🚫 | Couldn' find lyrics for this song! Please retry or search for an other track!`, ephemeral: true });
 			})
 	},
 };

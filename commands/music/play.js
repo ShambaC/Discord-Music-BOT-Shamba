@@ -1,26 +1,53 @@
-const { QueryType } = require('discord-player');
+const { QueryType, useMainPlayer } = require('discord-player');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     name: 'play',
-    aliases: ['p'],
     category: 'Music',
-    utilisation: '{prefix}play [song name/URL]',
     voiceChannel: true,
-    description: 'Play a song with URL or search term',
+    description: ('Play a song with URL or search term'),
+    options: [
+        {
+            name: 'song',
+            description: ('Search terms or link'),
+            type: ApplicationCommandOptionType.String,
+            required: true,
+            autocomplete: true
+        }
+    ],
 
-    async execute(client, message, args) {
-        if (!args[0]) return message.channel.send(`Please enter a valid search ${message.author}... try again ? ❌`);
+    async autocomplete({ int, client }) {
+        const focusedValue = int.options.getFocused();
+        if (focusedValue === "") return;
+        const player = useMainPlayer();
 
-        const res = await player.search(args.join(' '), {
-            requestedBy: message.member,
+        const res = await player.search(focusedValue, {
+            requestedBy: int.member,
             searchEngine: QueryType.AUTO,
             fallbackSearchEngine: QueryType.YOUTUBE_SEARCH
         });
 
-        if (!res || !res.tracks.length) return message.channel.send(`No results found ${message.author}... try again ? ❌`);
+        await int.respond(
+            res.tracks.map(track => ({ name: track.cleanTitle, value: track.url })).splice(0, 8),
+        );
+    },
 
-        const queue = await player.nodes.create(message.guild, {
-            metadata: message.channel,
+    async execute({ int, client }) {
+        const songArg = int.options.getString('title');
+
+        const res = await player.search(songArg, {
+            requestedBy: int.member,
+            searchEngine: QueryType.AUTO,
+            fallbackSearchEngine: QueryType.YOUTUBE_SEARCH
+        });
+
+        const embed = new EmbedBuilder()
+            .setColor('Red');
+
+        if (!res || !res.tracks.length) return int.reply({ embeds: [embed.setAuthor({ name: `No results found ${int.member}... try again ? ❌` })], ephemeral: true });
+
+        const queue = await player.nodes.create(int.guild, {
+            metadata: int.channel,
             play_embed_send: false,
             npembed: null,
             isPaused: false,
@@ -31,13 +58,13 @@ module.exports = {
         });
 
         try {
-            if (!queue.connection) await queue.connect(message.member.voice.channel);
+            if (!queue.connection) await queue.connect(int.member.voice.channel);
         } catch {
-            await player.deleteQueue(message.guild.id);
-            return message.channel.send(`I can't join the voice channel ${message.author}... try again ? ❌`);
+            await player.deleteQueue(int.guildId);
+            return int.reply({ embeds: [embed.setAuthor({ name: `I can't join the voice channel ${int.member}... try again ? ❌` })], ephemeral: true });
         }
 
-        await message.channel.send(`Loading your ${res.playlist ? 'playlist' : 'track'}... 🎧`);
+        await int.reply({ embeds: [embed.setAuthor({ name: `Loading your ${res.playlist ? 'playlist' : 'track'}... 🎧` })], ephemeral: false });
 
         res.playlist ? queue.addTrack(res.tracks) : queue.addTrack(res.tracks[0]);
 
