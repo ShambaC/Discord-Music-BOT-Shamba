@@ -36,8 +36,8 @@ module.exports = {
 
             const success = queue.setRepeatMode(QueueRepeatMode.QUEUE);
 
-            embed.setColor(success ? '#68f298' : 'Red');
-            embed.setAuthor({ name: success ? `Repeat mode enabled, the whole queue will be repeated endlessly 🔁` : errMsg });
+            embed.setColor(!success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: !success ? `Repeat mode enabled, the whole queue will be repeated endlessly 🔁` : errMsg });
 
             return int.reply({ embeds: [embed], ephemeral : false });    
         }
@@ -46,8 +46,8 @@ module.exports = {
 
             const success = queue.setRepeatMode(QueueRepeatMode.OFF);
 
-            embed.setColor(success ? '#68f298' : 'Red');
-            embed.setAuthor({ name: success ? `Repeat mode disabled, the queue will no longer be repeated 🔁` : errMsg });
+            embed.setColor(!success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: !success ? `Repeat mode disabled, the queue will no longer be repeated 🔁` : errMsg });
 
             return int.reply({ embeds: [embed], ephemeral : false });
         }
@@ -56,8 +56,8 @@ module.exports = {
 
             const success = queue.setRepeatMode(QueueRepeatMode.TRACK);
 
-            embed.setColor(success ? '#68f298' : 'Red');
-            embed.setAuthor({ name: success ? `Repeat mode enabled, the current track will be repeated 🔂` : errMsg });
+            embed.setColor(!success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: !success ? `Repeat mode enabled, the current track will be repeated 🔂` : errMsg });
 
             return int.reply({ embeds: [embed], ephemeral : false });
         }
@@ -66,8 +66,8 @@ module.exports = {
 
             const success = queue.setRepeatMode(QueueRepeatMode.AUTOPLAY);
 
-            embed.setColor(success ? '#68f298' : 'Red');
-            embed.setAuthor({ name: success ? `AutoPlay enabled, will play similar songs 🔁` : errMsg });
+            embed.setColor(!success ? '#68f298' : 'Red');
+            embed.setAuthor({ name: !success ? `AutoPlay enabled, will play similar songs 🔁` : errMsg });
 
             return int.reply({ embeds: [embed], ephemeral : false });
         }
