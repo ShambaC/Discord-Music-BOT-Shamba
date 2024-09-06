@@ -1,7 +1,6 @@
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 const { options } = require("../core/help");
 const { AudioFilters, useQueue } = require("discord-player");
-const { EmbedBuilder } = require("@discordjs/builders");
 
 module.exports = {
     name: 'filter',

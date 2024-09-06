@@ -1,6 +1,5 @@
-const { EmbedBuilder } = require("@discordjs/builders");
 const { useQueue } = require("discord-player");
-const { ApplicationCommandOptionType } = require("discord.js");
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
 
 module.exports = {
     name: 'remove',
