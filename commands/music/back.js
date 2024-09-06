@@ -13,7 +13,7 @@ module.exports = {
         const embed = new EmbedBuilder()
             .setColor("Red");
 
-        if (!queue || !queue.node.isPlaying()) return int.reply({ embeds: [embed.setAuthor({ name: `No music currently playing ${message.author}... try again ? ❌` })], ephemeral: true });
+        if (!queue) return int.reply({ embeds: [embed.setAuthor({ name: `No music currently playing ${message.author}... try again ? ❌` })], ephemeral: true });
 
         if (!queue.history.previousTrack) return int.reply({ embeds: [embed.setAuthor({ name: `There was no music played before ${message.author}... try again ? ❌`})], ephemeral: true });
 

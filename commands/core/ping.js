@@ -7,6 +7,6 @@ module.exports = {
 
     async execute({ int, client }) {
         await int.reply("Pong?");
-        int.reply(`Last heartbeat calculated ${ms(Date.now() - client.ws.shards.first().lastPingTimestamp, { long: true })} ago **${client.ws.ping}ms** 🛰️`);
+        int.editReply(`Last heartbeat calculated ${ms(Date.now() - client.ws.shards.first().lastPingTimestamp, { long: true })} ago **${client.ws.ping}ms** 🛰️`);
     }
 };

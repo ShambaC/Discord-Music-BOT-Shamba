@@ -22,7 +22,7 @@ module.exports = {
     async execute({ int, client }) {
         const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
+        if (!queue) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
         const actualFilter = queue.filters.ffmpeg.getFiltersEnabled()[0];
         const selectedFIlter = int.options.getString('filter');

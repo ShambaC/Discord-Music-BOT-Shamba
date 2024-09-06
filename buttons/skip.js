@@ -7,7 +7,7 @@ skipBtn.setStyle(ButtonStyle.Secondary);
 skipBtn.setEmoji('⏭️');
 
 async function btnFn({ int, queue }) {
-    if (!queue || !queue.node.isPlaying()) return int.reply({content: `No music currently playing <@${int.user.id}>... try again ? ❌`, components: [] });
+    if (!queue) return int.reply({content: `No music currently playing <@${int.user.id}>... try again ? ❌`, ephemeral: true });
 
     const success = queue.node.skip();
 

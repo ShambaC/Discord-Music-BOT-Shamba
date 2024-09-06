@@ -24,7 +24,6 @@ module.exports = {
         const res = await player.search(focusedValue, {
             requestedBy: int.member,
             searchEngine: QueryType.AUTO,
-            fallbackSearchEngine: QueryType.YOUTUBE_SEARCH
         });
 
         await int.respond(
@@ -33,12 +32,12 @@ module.exports = {
     },
 
     async execute({ int, client }) {
-        const songArg = int.options.getString('title');
+        const songArg = int.options.getString('song');
+        const player = useMainPlayer();
 
         const res = await player.search(songArg, {
             requestedBy: int.member,
             searchEngine: QueryType.AUTO,
-            fallbackSearchEngine: QueryType.YOUTUBE_SEARCH
         });
 
         const embed = new EmbedBuilder()
@@ -46,7 +45,7 @@ module.exports = {
 
         if (!res || !res.tracks.length) return int.reply({ embeds: [embed.setAuthor({ name: `No results found ${int.member}... try again ? ❌` })], ephemeral: true });
 
-        const queue = await player.nodes.create(int.guild, {
+        const queue = player.nodes.create(int.guild, {
             metadata: int.channel,
             play_embed_send: false,
             npembed: null,
@@ -54,7 +53,7 @@ module.exports = {
             ytdlOptions: {
                 quality: 'highestaudio',
                 highWaterMark: 1 << 25
-            }
+            },
         });
 
         try {
@@ -64,7 +63,7 @@ module.exports = {
             return int.reply({ embeds: [embed.setAuthor({ name: `I can't join the voice channel ${int.member}... try again ? ❌` })], ephemeral: true });
         }
 
-        await int.reply({ embeds: [embed.setAuthor({ name: `Loading your ${res.playlist ? 'playlist' : 'track'}... 🎧` })], ephemeral: false });
+        await int.reply({ embeds: [embed.setAuthor({ name: `Loading your ${res.playlist ? 'playlist' : 'track'}... 🎧` })], ephemeral: true });
 
         res.playlist ? queue.addTrack(res.tracks) : queue.addTrack(res.tracks[0]);
 

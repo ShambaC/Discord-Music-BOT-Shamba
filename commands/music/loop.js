@@ -24,7 +24,7 @@ module.exports = {
     async execute({ int, client }) {
         const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
+        if (!queue) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
         const embed = new EmbedBuilder();
         const errMsg = `Something went wrong ${int.member}... try again ? ❌`

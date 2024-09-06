@@ -25,7 +25,7 @@ for (const file of playerEvents) {
     const PlayerEvent = require(`./events/Player/${file}`);
     const txtEvent = `< -> > [Loaded Player Event] <${file.split(".")[0]}>`;
     console.log(txtEvent);
-    player.events.on(file.split(".")[0], PlayerEvent.bind(null, client));
+    player.events.on(file.split(".")[0], PlayerEvent.bind(null));
     delete require.cache[require.resolve(`./events/Player/${file}`)];
 }
 
@@ -51,7 +51,5 @@ readdirSync("./commands/").forEach((dirs) => {
 });
 
 client.on("ready", (client) => {
-    // client.application.commands.set(commandsArray);
-
-    client.guilds.cache.get('1048076055874916512').commands.set(commandsArray);
+    client.application.commands.set(commandsArray);
 });

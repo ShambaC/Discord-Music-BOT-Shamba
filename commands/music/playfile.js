@@ -17,7 +17,7 @@ module.exports = {
 
     async execute({ int, client }) {
 
-        var attached_song = int.getAttachment('file');
+        var attached_song = int.options.getAttachment('file');
 
         var attached_song_url = attached_song.url;
         const player = useMainPlayer()

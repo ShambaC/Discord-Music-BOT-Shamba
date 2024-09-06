@@ -31,7 +31,7 @@ module.exports = async (client, int) => {
                 return int.reply({ embeds: [errorEmbed], ephemeral: true });
             }
 
-            if (int.guild.members.me.voice.channel && int.member.voice.channel.id !== int.guild.members.m.voice.channel.id) {
+            if (int.guild.members.me.voice.channel && int.member.voice.channel.id !== int.guild.members.me.voice.channel.id) {
                 errorEmbed.setDescription(`❌ | You are not in the same voice channel`);
                 return int.reply({ embeds: [errorEmbed], ephemeral: true });
             }
