@@ -1,21 +1,26 @@
+const { EmbedBuilder } = require("discord.js");
+const { useQueue } = require("discord-player");
+
 module.exports = {
     name: 'progress',
-    aliases: ['pbar'],
     category: 'Music',
-    utilisation: '{prefix}progress',
     voiceChannel: true,
-    description: 'Shows the current timestamp of the track as a bar',
+    description: ('Shows the current timestamp of the track as a bar'),
 
-    async execute(client, message) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
         const progress = queue.node.createProgressBar();
         const timestamp = queue.node.getTimestamp();
 
-        if (timestamp.progress == 'Infinity') return message.channel.send(`Playing a live, no data to display 🎧`);
+        if (timestamp.progress == 'Infinity') return int.reply({ content: `Playing a live, no data to display 🎧`, ephemeral: true });
 
-        message.channel.send(`${progress} (**${timestamp.progress}**%)`);
+        const embed = new EmbedBuilder()
+            .setColor('Red')
+            .setAuthor({ name: `${progress} (**${timestamp.progress}**%)` });
+
+        int.reply({ embeds: [embed], ephemeral: false });
     },
 };

@@ -1,20 +1,27 @@
+const { useQueue } = require("discord-player");
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
     name: 'back',
-    aliases: ['previous'],
     category: 'Music',
-    utilisation: '{prefix}back',
     voiceChannel: true,
-    description: 'Play the previous song',
+    description: ('Play the previous song'),
 
-    async execute(client, message) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        const embed = new EmbedBuilder()
+            .setColor("Red");
 
-        if (!queue.previousTracks[1]) return message.channel.send(`There was no music played before ${message.author}... try again ? ❌`);
+        if (!queue) return int.reply({ embeds: [embed.setAuthor({ name: `No music currently playing ${message.author}... try again ? ❌` })], ephemeral: true });
+
+        if (!queue.history.previousTrack) return int.reply({ embeds: [embed.setAuthor({ name: `There was no music played before ${message.author}... try again ? ❌`})], ephemeral: true });
 
         await queue.history.back();
 
-        message.channel.send(`Playing the **previous** track ✅`);
+        embed.setColor('#68f298');
+        embed.setAuthor({ name: `Playing the **previous** track ✅` });
+
+        int.reply({ embeds: [embed], ephemeral: false });
     },
 };

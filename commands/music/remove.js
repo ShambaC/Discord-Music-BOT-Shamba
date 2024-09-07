@@ -1,21 +1,37 @@
+const { useQueue } = require("discord-player");
+const { ApplicationCommandOptionType, EmbedBuilder } = require("discord.js");
+
 module.exports = {
     name: 'remove',
-    aliases: ['rm'],
     category: 'Music',
-    utilisation: '{prefix}remove',
     voiceChannel: true,
     description: 'Remove a particular track from queue',
+    options: [
+        {
+            name: 'song',
+            description: ('The posiiton of the song in the queue that you want to remove'),
+            type: ApplicationCommandOptionType.Integer,
+            min_value: 0,
+            required: false
+        }
+    ],
 
-    async execute(client, message,args) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
-        if (!queue.tracks.toArray()[0]) return message.channel.send(`No music in the queue after the current one ${message.author}... try again ? ❌`);
-        if(args[0] > queue.tracks.size || args[0] < 1) return message.channel.send("That is not a valid track!... try again ? ❌")
+        if (!queue.tracks.toArray()[1]) return int.reply({ content: `No music in the queue after the current one ${int.member}... try again ? ❌`, ephemeral: true });
 
-        queue.node.remove(args[0] - 1)
+        const songNum = int.getInteger('song');
+        if(songNum > queue.tracks.size) return int.reply({ content: `No music in the queue after the current one ${message.author}... try again ? ❌`, ephemeral: true })
 
-        message.channel.send(`Removed song at queue position ${args[0]} 🗑️`);
+        queue.node.remove(songNum - 1);
+
+        const embed = new EmbedBuilder()
+            .setColor('#68f298')
+            .setAuthor({ name: `Removed song at queue position ${songNum} 🗑️` });
+
+        int.reply({ embeds: [embed], ephemeral: false });
     },
 }; 

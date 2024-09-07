@@ -1,15 +1,16 @@
+const { useQueue } = require("discord-player");
+const { EmbedBuilder } = require("discord.js");
+
 module.exports = {
     name: 'stop',
-    aliases: ['dc'],
     category: 'Music',
-    utilisation: '{prefix}stop',
     voiceChannel: true,
-    description: 'Stops and disconnects the BOT',
+    description: ('Stops and disconnects the BOT'),
 
-    execute(client, message) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
+        if (!queue) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
 
         if(!queue.deleted)
         {
@@ -18,6 +19,11 @@ module.exports = {
             queue.npembed = null;
             queue.delete();
         }
-        message.channel.send(`Music stopped into this server, see you next time ✅`);
+
+        const embed = new EmbedBuilder()
+            .setColor('#68f298')
+            .setAuthor({ name: `Music stopped into this server, see you next time ✅` });
+
+        int.reply({ embeds: [embed], ephemeral: false });
     },
 };

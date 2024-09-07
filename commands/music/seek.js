@@ -1,25 +1,37 @@
+const { useQueue } = require('discord-player');
+const { ApplicationCommandOptionType, EmbedBuilder } = require('discord.js');
 const ms = require('ms');
 
 module.exports = {
     name: 'seek',
-    aliases: [],
     category: 'Music',
-    utilisation: '{prefix}seek [time]',
     voiceChannel: true,
-    description: 'Seek to a part of track',
+    description: ('Seek to a part of track'),
+    options: [
+        {
+            name: 'time',
+            description: ('Time to skip to, can be in any format'),
+            type: ApplicationCommandOptionType.String,
+            required: true
+        }
+    ],
 
-    async execute(client, message, args) {
-        const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+        const queue = useQueue(int.guild);
 
-        if (!queue || !queue.node.isPlaying()) return message.channel.send(`No music currently playing ${message.author}... try again ? ❌`);
-        if (!args[0]) return message.channel.send("Please Enter a timestamp !");
-        
-        const timeToMS = ms(args.join(' '));
+        if (!queue) return int.reply({ content: `No music currently playing ${int.member}... try again ? ❌`, ephemeral: true });
+
+        const seekTime = int.options.getString('time');
+        const timeToMS = ms(seekTime);
                 
-        if (timeToMS >= queue.currentTrack.durationMS) return message.channel.send(`The indicated time is higher than the total time of the current song ${message.author}... try again ? ❌\n*Try for example a valid time like **5s, 10s, 20 seconds, 1m**...*`);
+        if (timeToMS >= queue.currentTrack.durationMS) return int.reply({ content: `The indicated time is higher than the total time of the current song ${int.member}... try again ? ❌\n*Try for example a valid time like **5s, 10s, 20 seconds, 1m**...*`, ephemeral: true });
 
         await queue.seek(timeToMS);
 
-        message.channel.send(`Time set on the current song **${ms(timeToMS, { long: true })}** ✅`);
+        const embed = new EmbedBuilder()
+            .setColor('#68f298')
+            .setAuthor({ name: `Time set on the current song **${ms(timeToMS, { long: true })}** ✅` });
+
+        int.reply({ embeds: [embed], ephemeral: false });
     },
 };

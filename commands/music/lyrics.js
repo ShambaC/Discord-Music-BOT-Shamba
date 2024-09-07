@@ -1,61 +1,43 @@
-const { EmbedBuilder } = require('discord.js');
-// const Genius = require("genius-lyrics");
-// const Client = new Genius.Client("token or blank");
+const { useQueue } = require('discord-player');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: 'lyrics',
-    aliases: [],
 	category: 'Music',
-    utilisation: '{prefix}lyrics [song name]',
-	description: 'Displays the lyrics of the current track or the track you searched',
+	description: ('Displays the lyrics of the current track or the track you searched'),
+	options: [
+		{
+			name: 'title',
+			description: 'Song name you want to see the lyrics for',
+			type: ApplicationCommandOptionType.String,
+			required: false
+		}
+	],
 
-    async execute(client, message, args) {
-      const queue = player.nodes.get(message.guild.id);
+    async execute({ int, client }) {
+		const queue = useQueue(int.guild);
 
-      if (!queue && !args[0]) return message.channel.send(`No track in queue or valid search provided ${message.author}... try again ? ❌`);
-	  
-	  var argument = true;
-	  var tempterm;
+		const songArg = int.options.getString('title');
 
-      message.channel.sendTyping();
-
-	  if(args[0])
-	  {
-		tempterm = args.join(' ');
-	  }
-	  else
-	  {
-		tempterm = queue.currentTrack.title;
-	  }
-
-	 
-	  var searches = null;
-	  
-	  if(tempterm.includes('('))
-	  {
-		var words = tempterm.split("(");
-		words.pop();
-		tempterm = words[0];
-	  }
-
-		// searches = await Client.songs.search(tempterm);
+		if (!queue && !songArg) return int.reply({ content: `No track in queue or valid search provided ${int.member}... try again ? ❌`, ephemeral: true });
 		
-		// const firstSong = searches[0];
+		var tempterm;
 
-		// if(typeof firstSong === "undefined")
-		// {
-		// 	return message.channel.send(`🚫 | Couldn' find lyrics for this song! Please retry or search for an other track!`);
-		// }
-
-		// const lyrics = await firstSong.lyrics();
-  
-		// const embed = new EmbedBuilder()
-		// .setColor('#2beddd')
-		// .setTitle(`**LYRICS | ${firstSong.featuredTitle}**`)
-		// .setDescription(lyrics.length > 4095 ? lyrics.substring(0, 4093) + '...': lyrics)
-		// .setFooter({text: `Made by ShambaC#3440`})
-  
-		// message.channel.send({embeds:[embed]}) 
+		if(songArg)
+		{
+			tempterm = songArg.toString();
+		}
+		else
+		{
+			tempterm = queue.currentTrack.title;
+		}
+		
+		if(tempterm.includes('('))
+		{
+			var words = tempterm.split("(");
+			words.pop();
+			tempterm = words[0];
+		}
 
 		fetch(`https://weeb-api.vercel.app/genius?query=${encodeURIComponent(tempterm)}`)
 			.then(res => res.json())
@@ -69,15 +51,13 @@ module.exports = {
 						.setTitle(`**LYRICS | ${searches[0].title}**`)
 						.setDescription(lyrics.length > 4095 ? lyrics.substring(0, 4093) + '...': lyrics)
 						.setFooter({text: `Made by ShambaC#3440`})
-				
-						message.channel.send({embeds:[embed]}) 
+					
+						int.reply({ embeds : [embed], ephemeral : false }) 
 					})
 			})
 			.catch(err => {
 				console.log(err)
-				return message.channel.send(`🚫 | Couldn' find lyrics for this song! Please retry or search for an other track!`)
+				return int.reply({ content: `🚫 | Couldn' find lyrics for this song! Please retry or search for an other track!`, ephemeral: true });
 			})
-	     
-	    
 	},
 };
