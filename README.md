@@ -1,28 +1,19 @@
-> [!IMPORTANT]
-> This BOT is BROKEN at the moment.<br>
-> The bot will join the vc but will not play a song because of new security implementation from youtube.<br>
-> I will rewrite the bot in a separate branch later and also update to maybe slash commands. <i>(I still hate them)</i><br>
-> Till then, the bot is only useful for getting lyrics.
-
----
-
-# 🎵 Music-bot
+# 🎵 Music-bot v2
 
 A complete code to download for a music bot 🎧
 
 Looking for a code for a music bot ? This fully open source code is made for your project !
 
-You can try out the BOT by inviting it to your server [here](https://discord.com/api/oauth2/authorize?client_id=507874682242990081&permissions=2150942784&scope=bot%20applications.commands)
+You can try out the BOT by inviting it to your server [here](https://discord.com/oauth2/authorize?client_id=507874682242990081)
 
 This Project was made with a fork of Zerio Dev's [Music BOT](https://github.com/ZerioDev/Music-bot).
 
-Updated to use discord-player v6 and discord.js v14
+Updated to add slash commands (Yes, I folded under 0 pressure)
 
 ## 📸 Screenshots
-![image](https://user-images.githubusercontent.com/38806897/147191799-b880a8e6-ff5d-4702-84b0-95d23739d8ff.png)
+![image](https://github.com/user-attachments/assets/97116182-b368-4ff5-953e-f9e6538f5f44)
 
-![image](https://user-images.githubusercontent.com/38806897/147191840-b34d746f-a87b-447d-9610-89013dac8750.png)
-
+![image](https://github.com/user-attachments/assets/19ba836b-99a6-4b20-a995-d7574213f41f)
 
 ## ⚡ Configuration
 
@@ -32,27 +23,21 @@ Setup the environment file.
 - Keep the last variable unchanged.
 
 ```
-px=
 token=
 playing=
 type=
 CLIENT_ID=
 GUILD_ID=
-DP_FORCE_YTDL_MOD="@distube/ytdl-core"
+YTtoken=
 ```
 
 ### Explanations
-- `px`: prefix (No I don't like slash commands as a user so I will never add them)
 - `token`: the token of the bot available on the [Discord Developers](https://discordapp.com/developers/applications) section
 - `playing`: the playing message
 - `type`: activity type (Currently does nothing. Activity types were changed to enum and I am too tired to write switch cases. Edit type directly in `ready.js`)
 - `CLIENT_ID`: don't remember why I added this but you can get it in the application page.
 - `GUILD_ID`: same, don't remember why I added this, ignore.
-- `DP_FORCE_YTDL_MOD`: forces discord-player to use @distube ytdl fork. Don't change this is required as ytdl-core has a bug currently.
-
-<i>No need to configure the lyrics file anymore</i>
-
-<i>Ignore the `config.js` file. Its of no use any longer.</i>
+- `YTtoken`: You need to paste your youtube authentication token here. Run this command: `npx --no discord-player-youtubei` and follow the instructions on your terminal. Use a dummy account. <b>Paste the whole generated string.</b>
 
 ## 📑 Installation
 
@@ -60,7 +45,7 @@ To use the project correctly you will need some tools.
 
 [FFmpeg](https://www.ffmpeg.org) to process audio
 
-[Node JS](https://nodejs.org/en/) (v16.9+) for environment
+[Node JS](https://nodejs.org/en/) (v18+) for environment
 
 NOTE : If you are on windows, you can either have ffmpeg binaries downloaded and added to path in your system or you can try using the npm package `ffmpeg-static`. But if you are on Linux, do not use the npm package, instead do the following :
 - `sudo apt update`
@@ -70,28 +55,32 @@ NOTE : If you are on windows, you can either have ffmpeg binaries downloaded and
 
 |       Name       | Description                                                        | Options              |
 |:----------------:|--------------------------------------------------------------------|----------------------|
+| about            | Show info about the bot                                            |                      |
+| help             | Show the help embed                                                | none, command name   |
 | invite           | Invite link for the bot                                            |                      |
 | ping             | Check the ping of the BOT                                          |                      |
-| back(previous)   | Play the previous song                                             |                      |
-| clear(cq)        | Clear the queue                                                    |                      |
+| back             | Play the previous song                                             |                      |
+| clear            | Clear the queue                                                    |                      |
 | filter           | Apply filters to the current queue                                 | filter name          |
-| loop(lp, repeat) | Loop the queue or current track                                    | none, queue          |
+| loop             | Loop the queue or current track                                    | none, queue          |
 | lyrics           | Displays the lyrics of the current track or the track you searched | none, search term    |
-| nowplaying(np)   | Shows the currently playing track details with buttons             |                      |
+| nowplaying       | Shows the currently playing track details with buttons             |                      |
 | pause            | Pause the track                                                    |                      |
-| play(p)          | Play a song with URL or search term                                | URL, search term     |
-| playfile(pf)     | Play the file attached to this command message                     |                      |
-| progress(pbar)   | Shows the current timestamp of the track as a bar                  |                      |
-| queue(q)         | Shows the queue of tracks                                          |                      |
-| remove(rm)       | Remove a particular track from queue                               | track number         |
-| resume(rs)       | Resumes the track                                                  |                      |
-| save(sv)         | Saves the name of the track to user's DMs                          |                      |
-| search           | Shows a list of 10 songs to choose from                            | Search Terms         |
-| seek             | Seek to a part of track                                            | Timestamp in seconds |
+| play             | Play a song with URL or search term                                | URL, search term     |
+| playfile         | Play the file attached to this command                             |                      |
+| progress         | Shows the current timestamp of the track as a bar                  |                      |
+| queue            | Shows the queue of tracks                                          |                      |
+| remove           | Remove a particular track from queue                               | track number         |
+| resume           | Resumes the track                                                  |                      |
+| save             | Saves the name of the track to user's DMs                          |                      |
+| seek             | Seek to a part of track                                            | Timestamp            |
 | shuffle          | Shuffle the queue order                                            |                      |
-| skip(sk)         | Skips the current song                                             |                      |
-| stop(dc)         | Stops and disconnects the BOT                                      |                      |
-| volume(vol)      | Set internal volume of the BOT                                     | value                |
+| skip             | Skips the current song                                             |                      |
+| stop             | Stops and disconnects the BOT                                      |                      |
+| volume           | Set internal volume of the BOT                                     | value                |
+
+- `search` command was removed as it is now integrated into the play command.
+- Added `autoplay` to loop options to play similar songs when the queue ends.
 
 Without forgetting of course the code editor ^^
 
