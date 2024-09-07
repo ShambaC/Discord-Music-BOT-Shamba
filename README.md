@@ -20,7 +20,6 @@ Updated to add slash commands (Yes, I folded under 0 pressure)
 Setup the environment file.
 - Copy the `.env.example` file and rename it to `.env`
 - Edit the file and fill in the details accordingly.
-- Keep the last variable unchanged.
 
 ```
 token=
