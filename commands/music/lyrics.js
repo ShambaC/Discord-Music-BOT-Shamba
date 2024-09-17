@@ -15,6 +15,8 @@ module.exports = {
 	],
 
     async execute({ int, client }) {
+		int.deferReply({ ephemeral : false });
+
 		const queue = useQueue(int.guild);
 
 		const songArg = int.options.getString('title');
@@ -52,7 +54,7 @@ module.exports = {
 						.setDescription(lyrics.length > 4095 ? lyrics.substring(0, 4093) + '...': lyrics)
 						.setFooter({text: `Made by ShambaC#3440`})
 					
-						int.reply({ embeds : [embed], ephemeral : false }) 
+						int.editReply({ embeds : [embed] }) 
 					})
 			})
 			.catch(err => {
