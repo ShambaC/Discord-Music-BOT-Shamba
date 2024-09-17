@@ -27,7 +27,7 @@ module.exports = {
         });
 
         await int.respond(
-            res.tracks.map(track => ({ name: track.title, value: track.url })).splice(0, 8),
+            res.tracks.map(track => ({ name: track.title.substring(0, 96) + "...", value: track.url })).splice(0, 8),
         );
     },
 
